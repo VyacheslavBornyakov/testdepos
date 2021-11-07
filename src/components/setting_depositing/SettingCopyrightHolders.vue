@@ -4,27 +4,27 @@
       <div class="title">Правообладатели:</div>
       <div class="participants items">
         <div class="item" v-for="men in Participant">
-          <setting-item
-            :key="men.id"
-            :item="men"
-            @remove="removeParticipant"
+          <participant
+              :key="men.id"
+              :Participant="men"
+              @remove="$emit('removeParticipant', men)"
           />
         </div>
       </div>
       <div class="company items">
         <div class="item" v-for="com in Company">
-          <setting-item
+          <company
               :key="com.id"
-              :item="com"
-              @remove="removeCompany"
+              :Company="com"
+              @removeCompany="$emit('removeCompany', com)"
           />
         </div>
       </div>
       <div v-if="!savedDepon" class="add">
-        <div class="add__point" @click="createNewParticipant">
+        <div class="add__point" @click="$emit('createNewParticipant')">
           + Добавить участника
         </div>
-        <div class="add__point" @click="createNewCompany">
+        <div class="add__point" @click="$emit('createNewCompany')">
           + Добавить компанию
         </div>
       </div>
@@ -46,53 +46,22 @@
 </template>
 
 <script>
-import SettingItem from "./SettingItem";
+import Participant from "./items/Participant";
+import Company from "./items/Company";
+
 export default {
   name: "SettingCopyrightHolders",
-  components: {SettingItem},
+  components: {Company, Participant},
   props: {
-    Participant: {
-      type:Array
+    Company:{
+      type:Array,
     },
-    Company: {
-      type: Array
+    Participant:{
+      type:Array
     },
     savedDepon: {
       type:Boolean
     }
-  },
-  data() {
-    return {
-      name:'',
-    }
-  },
-  methods: {
-    createNewParticipant() {
-      const newParticipant = {
-        id: Date.now(),
-        name: '',
-        name_en: 'заглушка'
-      }
-      this.Participant.push(newParticipant)
-    },
-    createNewCompany() {
-      const newCompany = {
-        id: Date.now(),
-        name: '',
-        name_en: 'заглушка'
-      }
-      this.Company.push(newCompany)
-    },
-    removeParticipant(Item) {
-      this.Participant = this.Participant.filter(p => p.id !== Item.id)
-    },
-    removeCompany(Item) {
-      this.Company = this.Company.filter(p => p.id !== Item.id)
-    }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

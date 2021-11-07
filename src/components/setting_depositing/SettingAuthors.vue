@@ -4,14 +4,15 @@
       <div class="title">Авторы:</div>
       <div class="participants items">
         <div class="item" v-for="author in Authors">
-          <setting-item
+          <author
+              :Author="author"
               :key="author.id"
-              @remove="removeAuthor"
-          />
+              @remove="$emit('removeAuthor', author)"
+            />
           </div>
       </div>
       <div class="add">
-        <div v-if="!savedDepon" class="add__point" @click="createNewAuthor">
+        <div v-if="!savedDepon" class="add__point" @click="$emit('createNewAuthor')">
           + Добавить участника
         </div>
       </div>
@@ -28,35 +29,17 @@
 </template>
 
 <script>
-import SettingItem from "./SettingItem";
+import Author from "./items/Author";
 export default {
   name: "SettingAuthors",
-  components: {SettingItem},
+  components: {Author},
   props:{
     Authors: {
-      type: Array
+      type:Array
     },
     savedDepon: {
       type:Boolean
     }
   },
-  methods: {
-    createNewAuthor() {
-      const newAuthor = {
-        id: Date.now(),
-        name: '',
-        name_en: 'заглушка автора'
-      }
-      this.Authors.push(newAuthor)
-    },
-    removeAuthor(Item) {
-      this.Authors = this.Authors.filter(p => p.id !== Item.id)
-
-    }
-  }
 }
 </script>
-
-<style scoped>
-
-</style>

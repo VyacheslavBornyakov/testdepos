@@ -250,22 +250,12 @@ section.main-app-block {
             color: var(--text_add);
             transform: rotate(45deg);
             position: relative;
-            top: 1px;
+            top: -1px;
             font-size: 14px;
-            cursor:pointer;
+            cursor: pointer;
+
             &:hover {
               color: var(--text_add-hover);
-            }
-          }
-          input {
-            margin-left: 2px;
-            font-size: 16px;
-            line-height: 21px;
-            color: var(--text_gray_color);
-            font-family: var(--ff_regular);
-            background-color: transparent;
-            &::placeholder {
-              color: var(--text_gray_color);
             }
           }
         }
@@ -310,20 +300,6 @@ section.main-app-block {
           }
         }
 
-      }
-      textarea {
-        background-color: transparent;
-        resize: unset;
-        border-radius: 20px;
-        height: 40px;
-        padding: 12px;
-        box-sizing: border-box;
-        color: var(--text_gray_color);
-        border: 1px solid var(--btn_edit_border);
-        outline: none;
-        &:focus {
-          border: 1px solid var(--aside_main_color);
-        }
       }
       .js-owners-en, .js-authors-en {
         p {
