@@ -1,7 +1,8 @@
 <template>
  <div class="content">
-  <repositories/>
-
+  <repositories
+    @showPopup="showPopup"
+  />
   <section class="main-app-block">
     <main-block-header
       :stepDepon = stepDepon
@@ -50,6 +51,77 @@
       СКРЫТЬ ФАЙЛЫ
     </a>
   </section>
+
+   <section class="main-app-block" v-for="repository in Repositories">
+     <div class="main-app-block__header">
+       <img :src="ydisk" class="logo_repository">
+       <div class="title">
+         Хранилище iReg
+       </div>
+       <div class="button">
+         <button class="btn-orange">ОПЛАТИТЬ</button>
+       </div>
+       <div class="count_files">
+         Доступно файлов: <span>{{ repository.count_files }}</span>
+       </div>
+     </div>
+
+     <div class="repository-files">
+
+       <div class="repository-files__item">
+         <div class="logo">
+           <div class="file-control">
+             <div class="file-control__ru point">
+               <img :src="file_control_ru">
+             </div>
+             <div class="file-control__en point">
+               <img :src="file_control_en">
+             </div>
+             <div class="file-control__close point">
+               <img :src="file_control_close">
+             </div>
+             <div class="file-control__additionally point">
+               <img :src="file_control_additionally">
+             </div>
+           </div>
+           <img :src="extensions.excel" class="file-extension">
+         </div>
+         <div class="name">
+           <p>logotip_final_v2</p>
+           <div class="edit">
+             <img :src="edit">
+           </div>
+         </div>
+       </div>
+
+       <div class="repository-files__item">
+         <div class="logo">
+           <div class="file-control">
+             <div class="file-control__ru point">
+               <img :src="file_control_ru">
+             </div>
+             <div class="file-control__en point">
+               <img :src="file_control_en">
+             </div>
+             <div class="file-control__close point">
+               <img :src="file_control_close">
+             </div>
+             <div class="file-control__additionally point">
+               <img :src="file_control_additionally">
+             </div>
+           </div>
+           <img :src="extensions.css" class="file-extension">
+         </div>
+       </div>
+
+       <div class="repository-files__item">
+         <div class="logo logo-add">
+           <input type="file">
+         </div>
+       </div>
+
+     </div>
+   </section>
  </div>
 </template>
 
@@ -58,19 +130,33 @@
 import Repositories from "./main_block_app/Repositories";
 import MainBlockHeader from "./main_block_app/main_block_header/MainBlockHeader";
 import copy from "../assets/icons/copy.svg";
-import Popup from "./popups/Popup";
 import SettingDepositing from "./setting_depositing/SettingDepositing";
+import ydisk from "./../assets/images/y_disk.png";
+import edit from "./../assets/icons/edit.svg";
+import file_control_ru from "./../assets/icons/file-control-ru.svg";
+import file_control_en from "./../assets/icons/file-control-en.svg";
+import file_control_close from "./../assets/icons/file-control-close.svg";
+import file_control_additionally from "./../assets/icons/file-control-additionally.svg";
+import extension_css from "./../assets/images/extensions/css.svg";
+import extension_excel from "./../assets/images/extensions/excel.svg";
 
 export default {
   name: 'NameBlock',
   components: {
     SettingDepositing,
-    Popup,
     MainBlockHeader,
     Repositories,
   },
   props:{
-
+    Repositories: {
+      type: Array
+    }
+    // dialogVisibleShow: {
+    //   type:Boolean,
+    // },
+    // dialogVisibleType: {
+    //   type:String,
+    // }
     // Point: {
     //   Authors: {
     //     type:Array
@@ -94,6 +180,16 @@ export default {
     return {
       stepDepon: 1,
       copy: copy,
+      ydisk: ydisk,
+      edit: edit,
+      file_control_ru: file_control_ru,
+      file_control_en: file_control_en,
+      file_control_close: file_control_close,
+      file_control_additionally: file_control_additionally,
+      extensions: {
+        css: extension_css,
+        excel: extension_excel,
+      },
       showFiles: false,
       Point: {
         Authors: [],
@@ -108,6 +204,9 @@ export default {
     startDepos(stepDepon) {
       this.stepDepon = stepDepon
     },
+    showPopup(arg, type) {
+      this.$emit('showPopup', arg, type)
+    }
   }
 }
 </script>
@@ -198,6 +297,7 @@ section.main-app-block {
 	border-radius: 30px;
 	padding: 15px 15px 20px 15px;
 	position: relative;
+  margin-bottom: 20px;
   .setting-depositing {
     width: 100%;
     height: 80px;
@@ -309,10 +409,10 @@ section.main-app-block {
     }
     .save {
       position: absolute;
-      right: 5px;
-      bottom: 5px;
+      right: 10px;
+      bottom: 9px;
       height: 30px;
-      width: 120px;
+      width: 130px;
       cursor: pointer;
     }
   }
@@ -548,12 +648,12 @@ section.main-app-block {
         }
         &-add {
           position: relative;
-          background-image: url('../assets/icons/file-add.svg');
+          background-image: url('./../assets/icons/file-add.svg');
           background-repeat: no-repeat;
           background-position: 50%;
           cursor: pointer;
           &:hover {
-            background-image: url('../assets/icons/file-add-hover.svg');
+            background-image: url('./../assets/icons/file-add-hover.svg');
           }
           input[type="file"] {
             cursor: pointer;

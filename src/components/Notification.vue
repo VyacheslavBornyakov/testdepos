@@ -29,6 +29,7 @@ section.notification {
   border-radius:30px;
   padding: 17px 20px 13px 30px;
   position: relative;
+  margin-bottom: 15px;
   .message {
     font-weight: 300;
     font-size: 22px;

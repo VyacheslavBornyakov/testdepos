@@ -113,14 +113,13 @@ export default {
     height: 40px;
     text-align: center;
     margin-left: 10px;
-    // margin-right: 10px;
+    margin-right: 10px;
     button {
       font-weight: 500;
       font-size: 12px;
       font-family: var(--ff_medium);
       height: 40px;
-      max-width: 120px;
-      width: 100%;
+      width: 130px;
       p {
         font-size: 10px;
       }

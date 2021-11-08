@@ -1,47 +1,41 @@
 <template>
   <div id="app">
     <div class="main">
-    <Sidebar
-      @showPopup="showPopup"
+    <mobile-control-sidebar
+      @toggleSidebar="showSidebar"
     />
+    <Sidebar/>
     <router-view/>
     </div>
-    <popup :show.sync="dialogVisibleShow">
-      <specify-mail-popup v-if="dialogVisibleType === 'mail'"/>
-      <access-popup v-else-if="dialogVisibleType === 'access'"/>
-      <warning-popup v-else-if="dialogVisibleType === 'warning'"/>
-    </popup>
   </div>
 </template>
 
 <script>
 import Sidebar from "./components/SideBar";
-import AccessPopup from "./components/popups/AccessPopup";
-import SpecifyMailPopup from "./components/popups/SpecifyMailPopup";
-import WarningPopup from "./components/popups/WarningPopup";
-import Popup from "./components/popups/Popup";
+import MobileControlSidebar from "./components/UI/MobileControlSidebar";
 
 export default {
   name: "app",
-  components: {
-    Sidebar,
-    AccessPopup,
-    SpecifyMailPopup,
-    WarningPopup,
-    Popup
-  },
-  data() {
-    return {
-      dialogVisibleShow: false,
-      dialogVisibleType: ''
-    }
-  },
+  components: {MobileControlSidebar, Sidebar},
   methods: {
-    showPopup(arg, type) {
-      this.dialogVisibleShow = arg
-      this.dialogVisibleType = type
+    showSidebar() {
+      document.querySelector('aside').classList.toggle('aside-show')
+      document.querySelector('article').classList.toggle('article-hide')
+      document.querySelector('.control-sidebar').classList.toggle('control-sidebar-active')
     }
   }
+  // data() {
+  //   return {
+  //     dialogVisibleShow: false,
+  //     dialogVisibleType: '',
+  //   }
+  // },
+  // methods: {
+  //   showPopup(arg, type) {
+  //     this.dialogVisibleShow = arg
+  //     this.dialogVisibleType = type
+  //   }
+  // }
 }
 </script>
 
@@ -63,6 +57,7 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  position: relative;
   article {
     width: 100%;
     margin-left: 300px;
@@ -73,16 +68,15 @@ main {
       margin: 0 auto;
       padding: 15px 0;
       box-sizing:border-box;
-      section {
-        margin-top: 15px;
-        margin-bottom: 15px;
-      }
     }
     .content-account {
       display: flex;
       align-items:center;
       justify-content: center;
     }
+  }
+  .article-hide {
+    display: none !important;
   }
 }
 

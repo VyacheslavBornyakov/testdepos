@@ -1,7 +1,10 @@
 <template>
   <div class="type__of__popup" v-if="show">
     <div class="popup__bg" @click.stop="hideDialog"></div>
-    <slot></slot>
+    <slot
+      @hidePopupCreateRepository="hidePopupCreateRepository"
+      @showInfoPopup="showInfoPopup"
+    ></slot>
   </div>
 </template>
 
@@ -17,6 +20,12 @@ export default {
   methods: {
     hideDialog() {
       this.$emit('update:show', false)
+    },
+    showInfoPopup() {
+      this.$emit('showInfoPopup', true, 'access')
+    },
+    hidePopupCreateRepository() {
+      this.$emit('hidePopupCreateRepository', false, '')
     }
   }
 }
