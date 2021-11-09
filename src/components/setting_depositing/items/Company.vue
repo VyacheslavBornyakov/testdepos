@@ -1,5 +1,5 @@
 <template>
-  <div class="input-title">
+  <div class="input-title item">
     <span
         class="js-remove-item"
         @click="$emit('removeCompany', Company)"
@@ -7,7 +7,7 @@
       +
     </span>
 
-    <input type="text" required v-model.trim="Company.name">
+    <input type="text" autofocus required v-model.trim="Company.name">
   </div>
 </template>
 

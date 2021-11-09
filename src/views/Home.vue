@@ -2,7 +2,10 @@
     <article>
       <main-block
         @showPopup="showPopup"
-        :Repositories="Repositories"
+        @createPointType="createPointType"
+        :Points="Points"
+        :Files="Files"
+        @removeFile="showPopupRemoveFile"
       />
       <popup
           :show.sync="dialogVisibleShow"
@@ -13,7 +16,11 @@
         />
         <access-popup
             v-else-if="dialogVisibleType === 'access'"
-            @hidePopupCreateRepository="hidePopupCreateRepository"
+            @hidePopupCreatePoint="hidePopupCreatePoint"
+        />
+        <file-remove
+            v-else-if="dialogVisibleType === 'file-remove'"
+            @answer="answerToRemoveFile"
         />
         <warning-popup v-else-if="dialogVisibleType === 'warning'"/>
       </popup>
@@ -26,10 +33,14 @@ import AccessPopup from "../components/popups/AccessPopup";
 import SpecifyMailPopup from "../components/popups/SpecifyMailPopup";
 import WarningPopup from "../components/popups/WarningPopup";
 import Popup from "../components/popups/Popup";
+import extension_css from "../assets/images/extensions/css.svg";
+import extension_excel from "../assets/images/extensions/excel.svg";
+import FileRemove from "../components/popups/FileRemove";
 
 export default {
   name: 'Home',
   components: {
+    FileRemove,
     MainBlock,
     AccessPopup,
     SpecifyMailPopup,
@@ -40,10 +51,26 @@ export default {
     return {
       dialogVisibleShow: false,
       dialogVisibleType: '',
-      Repositories:[]
+      Points: [],
+      createNewPointType:'',
+      extensions: {
+        css: extension_css,
+        excel: extension_excel,
+      },
+      fileToDelete: {},
+      Files:[
+        {
+          id: Date.now(),
+          extensionsType:extension_css,
+          name:'first test file'
+        }
+      ],
     }
   },
   methods: {
+    createPointType(arg) {
+      this.createNewPointType = arg
+    },
     showPopup(arg, type) {
       this.dialogVisibleShow = arg
       this.dialogVisibleType = type
@@ -52,15 +79,37 @@ export default {
       this.dialogVisibleShow = arg
       this.dialogVisibleType = type
     },
-    hidePopupCreateRepository() {
+    hidePopupCreatePoint() {
       this.dialogVisibleShow = false
       this.dialogVisibleType = ''
-      const newRepository = {
+      const newPoint = {
         id: Date.now(),
-        files:[],
-        count_files:0
+        Authors: [],
+        Company:[],
+        Participants:[],
+        AdditionalInformation: '',
+        Type: 1,
+        logoType: this.createNewPointType
       }
-      this.Repositories.push(newRepository)
+      this.Points.push(newPoint)
+
+      this.createNewPointType = ''
+    },
+    showPopupRemoveFile(file) {
+      this.fileToDelete = file
+      this.dialogVisibleShow = true
+      this.dialogVisibleType = 'file-remove'
+    },
+    answerToRemoveFile(arg) {
+      if (arg) {
+        this.removeFile(this.fileToDelete)
+      }
+      this.dialogVisibleShow = false
+      this.dialogVisibleType = ''
+      this.fileToDelete = {}
+    },
+    removeFile(file) {
+      this.Files = this.Files.filter(f => f.id !== file.id)
     }
   }
 }

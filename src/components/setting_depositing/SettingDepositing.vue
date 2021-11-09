@@ -66,19 +66,15 @@ export default {
   props: {
     stepDepon: {
       type:Number
+    },
+    Point: {
+      type: Object
     }
   },
   components: {SettingType, SettingAdditionalInformation, SettingAuthors, SettingCopyrightHolders},
   data() {
     return {
       savedDepon: false,
-      Point:{
-        Participants:[],
-        Company:[],
-        Authors:[],
-        AdditionalInformation:'',
-        Type:1
-      }
     }
   },
   methods: {
@@ -119,28 +115,19 @@ export default {
       this.Point.Authors = this.Point.Authors.filter(p => p.id !== Author.id)
     },
     saveData() {
+      this.Point.Participants.forEach(element => {
+        this.customValidateParticipants(element)
+      })
+      this.Point.Company.forEach(element => {
+        this.customValidateCompany(element)
+      })
+      this.Point.Authors.forEach(element => {
+        this.customValidateAuthors(element)
+      })
+
       if (this.Point.Participants.length === 0 || this.Point.Company.length === 0 || this.Point.Authors.length === 0) {
         alert('Нужно заполнить все обязательные поля')
         return
-      }
-
-      for (let i = 0; i < this.Point.Participants.length; i++) {
-        if (this.customValidateFields(this.Point.Participants[i])) {
-          alert('Заполните все поля правообладателей')
-          return
-        }
-      }
-      for (let i = 0; i < this.Point.Company.length; i++) {
-        if (this.customValidateFields(this.Point.Company[i])) {
-          alert('Заполните все поля правообладателей')
-          return
-        }
-      }
-      for (let i = 0; i < this.Point.Authors.length; i++) {
-        if (this.customValidateFields(this.Point.Authors[i])) {
-          alert('Заполните все поля авторов')
-          return
-        }
       }
 
       this.savedDepon = true
@@ -149,8 +136,23 @@ export default {
       this.savedDepon = false
     },
 
+    customValidateParticipants(element) {
+      if (this.customValidateFields(element)) {
+        this.removeParticipant(element)
+      }
+    },
+    customValidateCompany(element) {
+      if (this.customValidateFields(element)) {
+        this.removeCompany(element)
+      }
+    },
+    customValidateAuthors(element) {
+      if (this.customValidateFields(element)) {
+        this.removeAuthor(element)
+      }
+    },
     customValidateFields(element) {
-      return Boolean(element.name === '')
+      return Boolean(element.name.length < 3)
     }
   }
 }

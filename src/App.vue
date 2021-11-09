@@ -24,18 +24,6 @@ export default {
       document.querySelector('.control-sidebar').classList.toggle('control-sidebar-active')
     }
   }
-  // data() {
-  //   return {
-  //     dialogVisibleShow: false,
-  //     dialogVisibleType: '',
-  //   }
-  // },
-  // methods: {
-  //   showPopup(arg, type) {
-  //     this.dialogVisibleShow = arg
-  //     this.dialogVisibleType = type
-  //   }
-  // }
 }
 </script>
 
@@ -45,6 +33,7 @@ export default {
 @import "./assets/styles/const";
 @import "./assets/styles/buttons";
 @import "./assets/styles/custom-radio-form-group";
+@import "./assets/styles/transition-group";
 
 * {
   font-family: var(--ff_regular);

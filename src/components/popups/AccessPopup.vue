@@ -8,7 +8,7 @@
 
     <div class="control-buttons">
       <button class="btn-edit_border">Инструкция</button>
-      <button class="btn-orange" @click="hidePopupCreateRepository">Сделаю</button>
+      <button class="btn-orange" @click="hidePopupCreatePoint">Сделаю</button>
     </div>
   </div>
 </template>
@@ -17,8 +17,8 @@
 export default {
   name: "AccessPopup",
   methods: {
-    hidePopupCreateRepository() {
-      this.$emit('hidePopupCreateRepository')
+    hidePopupCreatePoint() {
+      this.$emit('hidePopupCreatePoint')
     }
   }
 }

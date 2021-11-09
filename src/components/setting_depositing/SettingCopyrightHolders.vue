@@ -3,22 +3,24 @@
     <div class="file-description__point-item">
       <div class="title">Правообладатели:</div>
       <div class="participants items">
-        <div class="item" v-for="men in Participant">
+        <transition-group name="item-list">
           <participant
-              :key="men.id"
-              :Participant="men"
-              @remove="$emit('removeParticipant', men)"
-          />
-        </div>
+                v-for="men in Participant"
+                :key="men.id"
+                :Participant="men"
+                @remove="$emit('removeParticipant', men)"
+            />
+        </transition-group>
       </div>
       <div class="company items">
-        <div class="item" v-for="com in Company">
+        <transition-group name="item-list">
           <company
+              v-for="com in Company"
               :key="com.id"
               :Company="com"
               @removeCompany="$emit('removeCompany', com)"
           />
-        </div>
+        </transition-group>
       </div>
       <div v-if="!savedDepon" class="add">
         <div class="add__point" @click="$emit('createNewParticipant')">

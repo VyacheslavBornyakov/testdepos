@@ -2,9 +2,12 @@
  <div class="content">
   <repositories
     @showPopup="showPopup"
+    @createPointType="createPointType"
   />
-  <section class="main-app-block">
+   
+  <section class="main-app-block" v-for="Point in Points">
     <main-block-header
+      :logoType = Point.logoType
       :stepDepon = stepDepon
     />
 
@@ -52,76 +55,18 @@
     </a>
   </section>
 
-   <section class="main-app-block" v-for="repository in Repositories">
-     <div class="main-app-block__header">
-       <img :src="ydisk" class="logo_repository">
-       <div class="title">
-         Хранилище iReg
-       </div>
-       <div class="button">
-         <button class="btn-orange">ОПЛАТИТЬ</button>
-       </div>
-       <div class="count_files">
-         Доступно файлов: <span>{{ repository.count_files }}</span>
-       </div>
-     </div>
+   <storage
+       @showBlockNewFile="showBlockNewFile"
+       :Files="Files"
+       :logo="ydisk"
+       :count_files="this.Files.length"
+       @removeFile="removeFile"
+     />
 
-     <div class="repository-files">
+   <new-file
+       v-if="showComponentNewFile"
+   />
 
-       <div class="repository-files__item">
-         <div class="logo">
-           <div class="file-control">
-             <div class="file-control__ru point">
-               <img :src="file_control_ru">
-             </div>
-             <div class="file-control__en point">
-               <img :src="file_control_en">
-             </div>
-             <div class="file-control__close point">
-               <img :src="file_control_close">
-             </div>
-             <div class="file-control__additionally point">
-               <img :src="file_control_additionally">
-             </div>
-           </div>
-           <img :src="extensions.excel" class="file-extension">
-         </div>
-         <div class="name">
-           <p>logotip_final_v2</p>
-           <div class="edit">
-             <img :src="edit">
-           </div>
-         </div>
-       </div>
-
-       <div class="repository-files__item">
-         <div class="logo">
-           <div class="file-control">
-             <div class="file-control__ru point">
-               <img :src="file_control_ru">
-             </div>
-             <div class="file-control__en point">
-               <img :src="file_control_en">
-             </div>
-             <div class="file-control__close point">
-               <img :src="file_control_close">
-             </div>
-             <div class="file-control__additionally point">
-               <img :src="file_control_additionally">
-             </div>
-           </div>
-           <img :src="extensions.css" class="file-extension">
-         </div>
-       </div>
-
-       <div class="repository-files__item">
-         <div class="logo logo-add">
-           <input type="file">
-         </div>
-       </div>
-
-     </div>
-   </section>
  </div>
 </template>
 
@@ -132,80 +77,57 @@ import MainBlockHeader from "./main_block_app/main_block_header/MainBlockHeader"
 import copy from "../assets/icons/copy.svg";
 import SettingDepositing from "./setting_depositing/SettingDepositing";
 import ydisk from "./../assets/images/y_disk.png";
-import edit from "./../assets/icons/edit.svg";
-import file_control_ru from "./../assets/icons/file-control-ru.svg";
-import file_control_en from "./../assets/icons/file-control-en.svg";
-import file_control_close from "./../assets/icons/file-control-close.svg";
-import file_control_additionally from "./../assets/icons/file-control-additionally.svg";
+import NewFile from "./main_block_app/NewFile";
+import Storage from "./main_block_app/Storage";
 import extension_css from "./../assets/images/extensions/css.svg";
-import extension_excel from "./../assets/images/extensions/excel.svg";
+import extension_excel from "../assets/images/extensions/excel.svg";
+
 
 export default {
   name: 'NameBlock',
   components: {
+    Storage,
+    NewFile,
     SettingDepositing,
     MainBlockHeader,
     Repositories,
   },
   props:{
-    Repositories: {
+    Points: {
       type: Array
+    },
+    Files: {
+      type:Array,
     }
-    // dialogVisibleShow: {
-    //   type:Boolean,
-    // },
-    // dialogVisibleType: {
-    //   type:String,
-    // }
-    // Point: {
-    //   Authors: {
-    //     type:Array
-    //   },
-    //   Company: {
-    //     type:Array
-    //   },
-    //   Participant: {
-    //     type:Array
-    //   },
-    //   AdditionalInformation: {
-    //     type:String
-    //   },
-    //   Type: {
-    //     type:Number
-    //   }
-    // }
-
   },
   data() {
     return {
       stepDepon: 1,
       copy: copy,
       ydisk: ydisk,
-      edit: edit,
-      file_control_ru: file_control_ru,
-      file_control_en: file_control_en,
-      file_control_close: file_control_close,
-      file_control_additionally: file_control_additionally,
+      showFiles: false,
       extensions: {
         css: extension_css,
         excel: extension_excel,
       },
-      showFiles: false,
-      Point: {
-        Authors: [],
-        Company:[],
-        Participant:[],
-        AdditionalInformation: '',
-        Type: 1
-      },
+      showComponentNewFile: false,
     }
   },
   methods: {
+    createPointType(type) {
+      this.$emit('createPointType', type)
+    },
     startDepos(stepDepon) {
       this.stepDepon = stepDepon
     },
     showPopup(arg, type) {
       this.$emit('showPopup', arg, type)
+    },
+    showBlockNewFile() {
+      this.showComponentNewFile = !this.showComponentNewFile
+    },
+    removeFile(file) {
+      this.$emit('removeFile', file)
     }
   }
 }
@@ -566,114 +488,6 @@ section.main-app-block {
           &-show {
             display: block;
           }
-        }
-      }
-    }
-  }
-  .repository-files {
-    display:flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    &__item {
-      display: flex;
-      flex-direction: column;
-      align-items:center;
-      margin-bottom: 15px;
-      margin-right: 20px;
-      .logo {
-        position: relative;
-        width: 140px;
-        height: 140px;
-        background: var(--light_white);
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-        border-radius: 20px;
-        margin-bottom: 8px;
-        &:hover {
-          .file-control {
-            display: block;
-          }
-        }
-        .file-extension {
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          margin: auto auto;
-          width: 50px;
-          height: 50px;
-        }
-        .file-control {
-          display: none;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          .point {
-            position: absolute;
-            background: var(--control-point);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            &:hover {
-              background: var(--control-point-hover);
-            }
-          }
-          &__ru {
-            left: 0;
-            top: 0;
-            border-top-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-          }
-          &__en {
-            bottom: 0;
-            left: 0;
-            border-bottom-left-radius: 20px;
-            border-top-right-radius: 20px;
-          }
-          &__close {
-            top: 0;
-            right: 0;
-            border-bottom-left-radius: 20px;
-            border-top-right-radius: 20px;
-          }
-          &__additionally {
-            bottom: 0;
-            right: 0;
-            border-bottom-right-radius: 20px;
-            border-top-left-radius: 20px;
-          }
-        }
-        &-add {
-          position: relative;
-          background-image: url('./../assets/icons/file-add.svg');
-          background-repeat: no-repeat;
-          background-position: 50%;
-          cursor: pointer;
-          &:hover {
-            background-image: url('./../assets/icons/file-add-hover.svg');
-          }
-          input[type="file"] {
-            cursor: pointer;
-            opacity: 0;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-      .name {
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        line-height: 16px;
-        color: var(--gray);
-        font-family: var(--ff_regular);
-        .edit {
-          margin-left: 3px;
-          cursor: pointer;
         }
       }
     }

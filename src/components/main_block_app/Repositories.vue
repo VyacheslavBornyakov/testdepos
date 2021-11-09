@@ -1,7 +1,7 @@
 <template>
   <section class="repositorys">
-    <button class="repository" v-for="box in repositories" @click="showPopupMail">
-      <img :src="box">
+    <button class="repository" v-for="box in repositories" @click="showPopupMail(box.name)">
+      <img :src="box.src" :alt="box.name">
     </button>
   </section>
 </template>
@@ -16,15 +16,25 @@ export default {
   data: function () {
     return {
       repositories: {
-        google_drive: google_drive,
-        ydisk: ydisk,
-        api: api
+        google_drive:{
+          name: 'google_drive',
+          src: google_drive
+        },
+        ydisk: {
+          name: 'ydisk',
+          src:ydisk
+        },
+        api: {
+          name: 'api',
+          src: api
+        }
       }
     }
   },
   methods: {
-    showPopupMail: function() {
+    showPopupMail(name) {
       this.$emit('showPopup', true, 'mail');
+      this.$emit('createPointType', name);
     },
   }
 }

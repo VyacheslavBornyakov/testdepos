@@ -130,6 +130,7 @@ aside {
         font-family: var(--ff_regular);
         font-size: 16px;
         line-height: 21px;
+        cursor:pointer;
         &:hover {
           color: rgba(255, 255, 255, 1);
         }

@@ -1,6 +1,6 @@
 <template>
   <div class="main-app-block__header">
-    <img :src="google_drive" class="logo_repository" alt="google-drive">
+    <img :src="srcLogo" class="logo_repository" :alt="logoType">
     <div class="link">
       <p>/deponirovanie</p>
       <div class="link__copy">
@@ -41,21 +41,43 @@ export default {
   components: {
     IconPlay,IconPause,IconClose
   },
+  beforeMount() {
+    this.receiveLogo()
+  },
   data: function () {
     return {
       google_drive: google_drive,
       ydisk: ydisk,
       api: api,
       copy: copy,
+      srcLogo: ''
     }
   },
   props: {
     stepDepon: {
       type: Number
+    },
+    logoType: {
+      type: String
     }
   },
   methods: {
-
+    receiveLogo() {
+      switch (this.logoType) {
+        case 'ydisk':
+          this.srcLogo = ydisk
+          break;
+        case 'google_drive':
+          this.srcLogo = google_drive
+          break;
+        case 'api':
+          this.srcLogo = api
+          break;
+        default:
+          this.srcLogo = api
+          break;
+      }
+    }
   }
 }
 </script>

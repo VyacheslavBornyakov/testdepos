@@ -1,0 +1,13 @@
+.item-list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.item-list-enter-active,
+.item-list-leave-active {
+  transition: all 1s ease;
+}
+.item-list-enter-from,
+.item-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}

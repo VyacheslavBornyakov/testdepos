@@ -3,13 +3,14 @@
     <div class="file-description__point-item">
       <div class="title">Авторы:</div>
       <div class="participants items">
-        <div class="item" v-for="author in Authors">
+        <transition-group name="item-list">
           <author
+              v-for="author in Authors"
               :Author="author"
               :key="author.id"
               @remove="$emit('removeAuthor', author)"
             />
-          </div>
+        </transition-group>
       </div>
       <div class="add">
         <div v-if="!savedDepon" class="add__point" @click="$emit('createNewAuthor')">
