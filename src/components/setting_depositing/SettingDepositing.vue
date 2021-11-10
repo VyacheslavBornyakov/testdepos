@@ -1,14 +1,15 @@
 <template>
 
   <div
-      @click="$emit('start', 2)"
-      v-if="stepDepon === 1"
+      @click="startDepon"
+      v-if="stateId === 1"
       class="setting-depositing"
   >
     Настроить депонирование
   </div>
+
   <div
-      v-else-if="stepDepon === 2"
+      v-else-if="stateId === 2"
       class="file-description"
       :class="{'file-description-disable': savedDepon}"
   >
@@ -64,7 +65,7 @@ import SettingType from "./SettingType";
 export default {
   name: "SettingDepositing",
   props: {
-    stepDepon: {
+    stateId: {
       type:Number
     },
     Point: {
@@ -78,6 +79,9 @@ export default {
     }
   },
   methods: {
+    startDepon() {
+      this.Point.stateId = 2
+    },
     createNewParticipant() {
       const newParticipant = {
         id: Date.now(),

@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import ydisk from "../assets/images/y_disk.png";
+import ydisk from "../assets/images/ydisk.jpeg";
 import copy from "../assets/icons/copy.svg";
 import Notification from "../components/Notification";
 

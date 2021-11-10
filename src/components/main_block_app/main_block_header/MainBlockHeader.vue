@@ -1,26 +1,38 @@
 <template>
   <div class="main-app-block__header">
-    <img :src="srcLogo" class="logo_repository" :alt="logoType">
+    <img :src="srcLogo" class="logo_repository" :alt="Point.logoType">
     <div class="link">
       <p>/deponirovanie</p>
       <div class="link__copy">
         <img :src="copy">
       </div>
     </div>
-    <div v-if="stepDepon === 1" class="button">
+    <div v-if="Point.stateId === 1" class="button">
       <button class="btn-orange">ВЫБРАТЬ ТАРИФ</button>
     </div>
-    <div v-if="stepDepon === 2" class="button">
+    <div v-if="Point.stateId === 2" class="button">
       <button class="btn-premium">Premium <p>(изменить)</p></button>
     </div>
     <div class="control">
-      <div class="icon play">
+      <div class="icon play"
+         @click="play_active = true; pause_active = false; remove_active = false"
+        :class="{'play-active' : play_active}"
+      >
         <icon-play/>
       </div>
-      <div class="icon pause">
+      <div class="icon pause"
+         @click="pause_active = true; remove_active = false; play_active = false"
+       :class="{'pause-active' : pause_active}"
+      >
         <icon-pause/>
       </div>
-      <div class="icon close">
+      <div class="icon close"
+         @click="
+         pause_active = false;
+         play_active = false;
+         $emit('removePoint')"
+        :class="{'close-active' : remove_active}"
+      >
         <icon-close/>
       </div>
     </div>
@@ -28,13 +40,21 @@
 </template>
 
 <script>
-import google_drive from "../../../assets/images/google_drive.png";
-import ydisk from "../../../assets/images/y_disk.png";
-import api from "../../../assets/images/api.png";
+import google_drive from "../../../assets/images/google_drive.jpeg";
+import ydisk from "../../../assets/images/ydisk.jpeg";
+import ssh from "../../../assets/images/ssh.png";
+import onedrive from '../../../assets/images/onedrive.jpg'
+import github from '../../../assets/images/github.svg'
+import dropbox from '../../../assets/images/dropbox.png'
+import gitlab from '../../../assets/images/gitlab.jpeg'
+import figma from '../../../assets/images/figma.png'
+
 import copy from "../../../assets/icons/copy.svg";
 import IconPlay from "../../icons/IconPlay";
 import IconPause from "../../icons/IconPause";
 import IconClose from "../../icons/IconClose";
+
+
 
 export default {
   name: "MainBlockHeader",
@@ -48,36 +68,56 @@ export default {
     return {
       google_drive: google_drive,
       ydisk: ydisk,
-      api: api,
+      ssh: ssh,
       copy: copy,
-      srcLogo: ''
+      onedrive: onedrive,
+      github: github,
+      dropbox: dropbox,
+      gitlab: gitlab,
+      figma: figma,
+      srcLogo: '',
+      play_active: false,
+      pause_active: false,
+      remove_active: false,
     }
   },
   props: {
-    stepDepon: {
-      type: Number
-    },
-    logoType: {
-      type: String
+    Point: {
+      type:Object
     }
   },
   methods: {
     receiveLogo() {
-      switch (this.logoType) {
+      switch (this.Point.logoType) {
         case 'ydisk':
           this.srcLogo = ydisk
           break;
         case 'google_drive':
           this.srcLogo = google_drive
           break;
-        case 'api':
-          this.srcLogo = api
+        case 'ssh':
+          this.srcLogo = ssh
+          break;
+        case 'onedrive':
+          this.srcLogo = onedrive
+          break;
+        case 'github':
+          this.srcLogo = github
+          break;
+        case 'dropbox':
+          this.srcLogo = dropbox
+          break;
+        case 'gitlab':
+          this.srcLogo = gitlab
+          break;
+        case 'figma':
+          this.srcLogo = figma
           break;
         default:
-          this.srcLogo = api
+          this.srcLogo = ssh
           break;
       }
-    }
+    },
   }
 }
 </script>

@@ -103,6 +103,7 @@ export default {
         Type: 1,
       },
       savedDepon:false,
+      attachment : { name : null,file: null }
     }
   },
 

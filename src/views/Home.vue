@@ -6,10 +6,9 @@
         :Points="Points"
         :Files="Files"
         @removeFile="showPopupRemoveFile"
+        @removePoint="showPopupRemovePoint"
       />
-      <popup
-          :show.sync="dialogVisibleShow"
-      >
+      <popup :show.sync="dialogVisibleShow">
         <specify-mail-popup
             v-if="dialogVisibleType === 'mail'"
             @showInfoPopup="showInfoPopup"
@@ -22,13 +21,17 @@
             v-else-if="dialogVisibleType === 'file-remove'"
             @answer="answerToRemoveFile"
         />
+        <point-remove
+            v-else-if="dialogVisibleType === 'point-remove'"
+            @answer="answerToRemovePoint"
+        />
         <warning-popup v-else-if="dialogVisibleType === 'warning'"/>
       </popup>
     </article>
 </template>
 
 <script>
-import MainBlock from '../components/MainBlock.vue'
+import MainBlock from '../components/main_block_app/MainBlock.vue'
 import AccessPopup from "../components/popups/AccessPopup";
 import SpecifyMailPopup from "../components/popups/SpecifyMailPopup";
 import WarningPopup from "../components/popups/WarningPopup";
@@ -36,6 +39,7 @@ import Popup from "../components/popups/Popup";
 import extension_css from "../assets/images/extensions/css.svg";
 import extension_excel from "../assets/images/extensions/excel.svg";
 import FileRemove from "../components/popups/FileRemove";
+import PointRemove from "../components/popups/PointRemove";
 
 export default {
   name: 'Home',
@@ -45,7 +49,8 @@ export default {
     AccessPopup,
     SpecifyMailPopup,
     WarningPopup,
-    Popup
+    Popup,
+    PointRemove
   },
   data() {
     return {
@@ -58,6 +63,7 @@ export default {
         excel: extension_excel,
       },
       fileToDelete: {},
+      pointToDelete: {},
       Files:[
         {
           id: Date.now(),
@@ -65,6 +71,24 @@ export default {
           name:'first test file'
         }
       ],
+      filesPoint: [
+        {id: 1, name: 'тестовое имя1', directories:'folder1/folder1/'},
+        {id: 2, name: 'тестовое имя2', directories:'folder1/'},
+        {id: 3, name: 'тестовое имя3', directories:'folder1/folder1/'},
+        {id: 4, name: 'тестовое имя4', directories:'folder1/'},
+        {id: 5, name: 'тестовое имя5', directories:'folder1/folder1/'},
+        {id: 6, name: 'тестовое имя6', directories:'folder1/folder1/'},
+        {id: 7, name: 'тестовое имя7', directories:'/'},
+        {id: 8, name: 'тестовое имя8', directories:'folder1/'},
+        {id: 9, name: 'тестовое имя9', directories:'folder1/folder1/'},
+        {id: 10, name: 'тестовое имя10', directories:'folder1/folder1/'},
+        {id: 11, name: 'тестовое имя11', directories:'folder1/folder1/'},
+        {id: 12, name: 'тестовое имя12', directories:'folder1/'},
+        {id: 13, name: 'тестовое имя13', directories:'folder1/folder1/'},
+        {id: 14, name: 'тестовое имя14', directories:'folder1/folder1/'},
+        {id: 15, name: 'тестовое имя15', directories:'folder1/folder1/'},
+        {id: 16, name: 'тестовое имя16', directories:'folder1/folder1/'},
+      ]
     }
   },
   methods: {
@@ -89,7 +113,9 @@ export default {
         Participants:[],
         AdditionalInformation: '',
         Type: 1,
-        logoType: this.createNewPointType
+        logoType: this.createNewPointType,
+        stateId: 1,
+        Files: this.filesPoint
       }
       this.Points.push(newPoint)
 
@@ -110,6 +136,22 @@ export default {
     },
     removeFile(file) {
       this.Files = this.Files.filter(f => f.id !== file.id)
+    },
+    showPopupRemovePoint(Point){
+      this.pointToDelete = Point
+      this.dialogVisibleShow = true
+      this.dialogVisibleType = 'point-remove'
+    },
+    removePoint(Point) {
+      this.Points = this.Points.filter(f => f.id !== Point.id)
+    },
+    answerToRemovePoint(arg) {
+      if (arg) {
+        this.removePoint(this.pointToDelete)
+      }
+      this.dialogVisibleShow = false
+      this.dialogVisibleType = ''
+      this.pointToDelete = {}
     }
   }
 }
