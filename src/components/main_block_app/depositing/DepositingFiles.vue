@@ -1,14 +1,14 @@
 <template>
   <div class="files__point">
     <div class="extension">
-      <img>
+      <img :src="file.extensionsType"/>
     </div>
 
     <div class="link">
-      <p contenteditable="true">
-        <span contenteditable="false">{{ file.directories }}</span>
-        {{ file.name }}
-      </p>
+      <div class="way">
+        <span>{{ file.directories }}</span>
+        <p contenteditable="true">{{ file.name }}</p>
+      </div>
       <div class="link__copy">
         <img :src="copy">
       </div>
@@ -67,6 +67,68 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.files__point {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  .extension {
+    max-width: 40px;
+    width: 100%;
+    height: 40px;
+    background: var(--white);
+    border: 2px solid rgba(141, 141, 141, 0.6);
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-right: 10px;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius:50%;
+    }
+  }
+
+
+  .link {
+    position: relative;
+    background: var(--light_white);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .way {
+      display: inline-flex;
+      align-items: center;
+      p {
+        font-size: 16px;
+        line-height: 16px;
+        font-family: var(--ff_regular);
+        color: var(--gray);
+      }
+      span {
+        font-size: 16px;
+        line-height: 21px;
+        color: var(--text_gray_color);
+        font-family: var(--ff_regular);
+      }
+    }
+  }
+
+  &-no_depositing {
+    .link {
+      max-width: 620px;
+    }
+  }
+
+
+}
+
+
 .controls {
   display: flex;
   align-items: center;

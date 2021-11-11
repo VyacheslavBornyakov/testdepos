@@ -1,6 +1,6 @@
 <template>
-  <section class="repositorys">
-    <button class="repository" v-for="box in repositories" @click="showPopupMail(box.name)">
+  <section class="repositorys" :class="{'repositorys-crutch' : showMore}">
+    <button class="repository" v-for="box in computedRepositories" @click="showPopupMail(box.name)">
       <img :src="box.src" :alt="box.name">
     </button>
     <button class="repository">
@@ -9,16 +9,9 @@
     <button
         class="repository-show-more"
         v-if="!showMore"
-        @click="showMore = true"
+        @click="showMoreBox"
     >
       Ещё >
-    </button>
-    <button class="repository repository-new_string"
-      v-for="box in repositories_more"
-      @click="showPopupMail(box.name)"
-      v-if="showMore"
-    >
-      <img :src="box.src" :alt="box.name">
     </button>
   </section>
 </template>
@@ -37,46 +30,33 @@ export default {
   name: "Repositories",
   data: function () {
     return {
-      repositories: {
-        google_drive:{
-          name: 'google_drive',
-          src: google_drive
-        },
-        ydisk: {
-          name: 'ydisk',
-          src:ydisk
-        },
-        onedrive: {
-          name: 'onedrive',
-          src: onedrive
-        },
-        dropbox: {
-          name: 'dropbox',
-          src: dropbox
-        },
-      },
+      repositories: [
+        {name: 'google_drive', src: google_drive},
+        {name: 'ydisk', src:ydisk},
+        {name: 'onedrive', src: onedrive},
+        {name: 'dropbox', src: dropbox},
+        {name: 'github', src: github},
+        {name: 'gitlab', src: gitlab},
+        {name: 'figma', src: figma},
+      ],
       ssh: {
         name: 'ssh',
         src:ssh
       },
+      limit:4,
       showMore: false,
-      repositories_more: {
-        github: {
-          name: 'github',
-          src: github
-        },
-        gitlab: {
-          name: 'gitlab',
-          src: gitlab
-        },
-        figma: {
-          name: 'figma',
-          src: figma
-        },
-      }
+    }
+  },
+  computed:{
+    computedRepositories(){
+      return this.limit ? this.repositories.slice(0,this.limit) : this.repositories
     }
   },
   methods: {
+    showMoreBox() {
+      this.showMore = true
+      this.limit = null
+    },
     showPopupMail(name) {
       this.$emit('showPopup', true, 'mail');
       this.$emit('createPointType', name);
@@ -88,8 +68,11 @@ export default {
 <style scoped lang="scss">
   section.repositorys {
     display: flex;
+    align-items: flex-start;
+    gap:20px;
     flex-wrap: wrap;
-    align-items:flex-start;
+    margin-bottom: 25px;
+
     .repository {
       background: var(--white);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
@@ -99,20 +82,9 @@ export default {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-right: 20px;
       transition: all 0.3s ease-in-out;
       padding: 20px 10px;
       flex-wrap: wrap;
-      margin-bottom: 25px;
-      &:last-child {
-        margin-right: 0;
-      }
-      &-new_string {
-        margin-right: 0;
-        &:last-child {
-          margin-left: 20px;
-        }
-      }
       img {
         max-width: 100%;
         max-height: 100%;
@@ -137,4 +109,8 @@ export default {
       }
     }
 }
+  //.repositorys-crutch:after {
+  //  content: '';
+  //  flex: auto;
+  //}
 </style>

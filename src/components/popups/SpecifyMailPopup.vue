@@ -3,7 +3,7 @@
     <div class="title">Укажите вашу Google-почту</div>
     <form @submit.prevent>
       <div class="form-group">
-        <input type="email" @input="validateEmail" v-model.trim="email">
+        <input type="email" ref="input" @input="validateEmail" v-model.trim="email">
       </div>
       <div class="control-buttons">
         <button
@@ -26,6 +26,11 @@ export default {
       error: '',
       validate: false
     }
+  },
+  mounted() {
+    this.$nextTick(()=>{
+      this.$refs.input.focus()
+    });
   },
   methods: {
     validateEmail(){

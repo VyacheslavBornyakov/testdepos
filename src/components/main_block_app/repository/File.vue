@@ -18,13 +18,10 @@
           <img :src="file_control_additionally">
         </div>
       </div>
-      <img :src="file.extensionsType" class="file-extension">
+      <img :src="file.extensionsType" class="file-extension" @click="editName">
     </div>
     <div class="name">
-      <p>{{ file.name }}</p>
-      <div class="edit">
-        <img :src="edit">
-      </div>
+      <p contenteditable="true" ref="name">{{ file.name }}</p>
     </div>
   </div>
 </template>
@@ -51,6 +48,21 @@ export default {
       file_control_additionally: file_control_additionally,
       edit: edit,
     }
+  },
+  methods: {
+    editName() {
+      this.$nextTick(()=>{
+        this.$refs.name.focus()
+      });
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.name {
+  p {
+    max-width: 130px;
+  }
+}
+</style>

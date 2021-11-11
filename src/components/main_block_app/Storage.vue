@@ -14,14 +14,12 @@
     </div>
 
     <div class="repository-files">
-
       <file
           v-for="file in Files"
           :file="file"
           :key="file.id"
           @removeFile="$emit('removeFile', file)"
-        />
-
+      />
       <div class="repository-files__item">
         <div class="logo logo-add" @click="$emit('showBlockNewFile')"></div>
       </div>
@@ -65,15 +63,15 @@ export default {
 <style lang="scss">
 
 .repository-files {
-  display:flex;
+  display: flex;
   align-items: flex-start;
+  gap:25px;
   flex-wrap: wrap;
   &__item {
     display: flex;
     flex-direction: column;
     align-items:center;
     margin-bottom: 15px;
-    margin-right: 25px;
     .logo {
       position: relative;
       width: 150px;

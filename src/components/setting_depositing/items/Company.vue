@@ -7,7 +7,7 @@
       +
     </span>
 
-    <input type="text" autofocus required v-model.trim="Company.name">
+    <input type="text" ref="input" v-model.trim="Company.name">
   </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
       type:Object,
     }
   },
+  mounted() {
+    this.$nextTick(()=>{
+      this.$refs.input.focus()
+    });
+  }
 }
 </script>
 

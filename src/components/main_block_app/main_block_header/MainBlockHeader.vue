@@ -163,7 +163,7 @@ export default {
     font-size: 22px;
     line-height: 21px;
     color: var(--text_gray_color);
-    max-width: 445px;
+    max-width: 430px;
     width: 100%;
     font-family: var(--ff_regular);
   }
