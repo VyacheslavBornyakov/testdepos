@@ -8,7 +8,12 @@
         @removeFile="showPopupRemoveFile"
         @removePoint="showPopupRemovePoint"
       />
-      <popup :show.sync="dialogVisibleShow">
+      <popup
+        :show.sync="dialogVisibleShow"
+        @hidePopup="hidePopup"
+      >
+
+        <transition name="bounce">
         <specify-mail-popup
             v-if="dialogVisibleType === 'mail'"
             @showInfoPopup="showPopup"
@@ -26,6 +31,8 @@
             @answer="answerToRemovePoint"
         />
         <warning-popup v-else-if="dialogVisibleType === 'warning'"/>
+
+        </transition>
       </popup>
     </article>
 </template>
@@ -36,7 +43,6 @@ import AccessPopup from "../components/popups/AccessPopup";
 import SpecifyMailPopup from "../components/popups/SpecifyMailPopup";
 import WarningPopup from "../components/popups/WarningPopup";
 import Popup from "../components/popups/Popup";
-import extension_css from "../assets/images/extensions/css.svg";
 import FileRemove from "../components/popups/FileRemove";
 import PointRemove from "../components/popups/PointRemove";
 
@@ -57,40 +63,35 @@ export default {
       dialogVisibleType: '',
       Points: [],
       createNewPointType:'',
-      extensions: {
-        css: extension_css,
-      },
       fileToDelete: {},
       pointToDelete: {},
       Files:[
-        {id: 1,extensionsType:extension_css,name:'first test file'},
-        {id: 2,extensionsType:extension_css,name:'first test file'},
-        {id: 3,extensionsType:extension_css,name:'first test file'},
-        {id: 4,extensionsType:extension_css,name:'first test file'},
-        {id: 5,extensionsType:extension_css,name:'first test file'},
-        {id: 6,extensionsType:extension_css,name:'first test file'},
-        {id: 7,extensionsType:extension_css,name:'first test file'},
-        {id: 8,extensionsType:extension_css,name:'first test file'},
-        {id: 9,extensionsType:extension_css,name:'first test file'},
-        {id: 10,extensionsType:extension_css,name:'first test file'}
+        {id: 1,extensionsType:'pdf',name:'first test file'},
+        {id: 2,extensionsType:'mp3',name:'first test file'},
+        {id: 3,extensionsType:'mp4',name:'first test file'},
+        {id: 4,extensionsType:'xls',name:'first test file'},
+        {id: 5,extensionsType:'doc',name:'first test file'},
+        {id: 6,extensionsType:'txt',name:'first test file'},
+        {id: 7,extensionsType:'zip',name:'first test file'},
+        {id: 8,extensionsType:'img',name:'first test file'},
       ],
       filesPoint: [
-        {id: 1, name: 'тестовое имя1', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 2, name: 'тестовое имя2', directories:'folder1/',extensionsType:extension_css},
-        {id: 3, name: 'тестовое имя3', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 4, name: 'тестовое имя4', directories:'folder1/',extensionsType:extension_css},
-        {id: 5, name: 'тестовое имя5', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 6, name: 'тестовое имя6', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 7, name: 'тестовое имя7', directories:'/',extensionsType:extension_css},
-        {id: 8, name: 'тестовое имя8', directories:'folder1/',extensionsType:extension_css},
-        {id: 9, name: 'тестовое имя9', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 10, name: 'тестовое имя10', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 11, name: 'тестовое имя11', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 12, name: 'тестовое имя12', directories:'folder1/',extensionsType:extension_css},
-        {id: 13, name: 'тестовое имя13', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 14, name: 'тестовое имя14', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 15, name: 'тестовое имя15', directories:'folder1/folder1/',extensionsType:extension_css},
-        {id: 16, name: 'тестовое имя16', directories:'folder1/folder1/',extensionsType:extension_css},
+        {id: 1, name: 'тестовое имя1', directories:'folder1/folder1/',extensionsType:'pdf'},
+        {id: 2, name: 'тестовое имя2', directories:'folder1/',extensionsType:'mp3'},
+        {id: 3, name: 'тестовое имя3', directories:'folder1/folder1/',extensionsType:'mp4'},
+        {id: 4, name: 'тестовое имя4', directories:'folder1/',extensionsType:'xls'},
+        {id: 5, name: 'тестовое имя5', directories:'folder1/folder1/',extensionsType:'doc'},
+        {id: 6, name: 'тестовое имя6', directories:'folder1/folder1/',extensionsType:'txt'},
+        {id: 7, name: 'тестовое имя7', directories:'/',extensionsType:'zip'},
+        {id: 8, name: 'тестовое имя8', directories:'folder1/',extensionsType:'img'},
+        {id: 9, name: 'тестовое имя9', directories:'folder1/folder1/',extensionsType:'pdf'},
+        {id: 10, name: 'тестовое имя10', directories:'folder1/folder1/',extensionsType:'mp3'},
+        {id: 11, name: 'тестовое имя11', directories:'folder1/folder1/',extensionsType:'mp4'},
+        {id: 12, name: 'тестовое имя12', directories:'folder1/',extensionsType:'xls'},
+        {id: 13, name: 'тестовое имя13', directories:'folder1/folder1/',extensionsType:'doc'},
+        {id: 14, name: 'тестовое имя14', directories:'folder1/folder1/',extensionsType:'txt'},
+        {id: 15, name: 'тестовое имя15', directories:'folder1/folder1/',extensionsType:'zip'},
+        {id: 16, name: 'тестовое имя16', directories:'folder1/folder1/',extensionsType:'img'},
       ]
     }
   },
@@ -100,11 +101,14 @@ export default {
     },
     showPopup(arg, type) {
       this.dialogVisibleShow = arg
-      this.dialogVisibleType = type
+      setTimeout(() => this.dialogVisibleType = type, 200);
+    },
+    hidePopup() {
+      this.dialogVisibleType = ''
+      setTimeout(() => this.dialogVisibleShow = false, 500);
     },
     hidePopupCreatePoint() {
-      this.dialogVisibleShow = false
-      this.dialogVisibleType = ''
+      this.hidePopup()
       const newPoint = {
         id: Date.now(),
         Authors: [],
@@ -122,15 +126,13 @@ export default {
     },
     showPopupRemoveFile(file) {
       this.fileToDelete = file
-      this.dialogVisibleShow = true
-      this.dialogVisibleType = 'file-remove'
+      this.showPopup(true, 'file-remove')
     },
     answerToRemoveFile(arg) {
       if (arg) {
         this.removeFile(this.fileToDelete)
       }
-      this.dialogVisibleShow = false
-      this.dialogVisibleType = ''
+      this.hidePopup()
       this.fileToDelete = {}
     },
     removeFile(file) {
@@ -138,8 +140,7 @@ export default {
     },
     showPopupRemovePoint(Point){
       this.pointToDelete = Point
-      this.dialogVisibleShow = true
-      this.dialogVisibleType = 'point-remove'
+      this.showPopup(true, 'point-remove')
     },
     removePoint(Point) {
       this.Points = this.Points.filter(f => f.id !== Point.id)
@@ -148,15 +149,30 @@ export default {
       if (arg) {
         this.removePoint(this.pointToDelete)
       }
-      this.dialogVisibleShow = false
-      this.dialogVisibleType = ''
+      this.hidePopup()
       this.pointToDelete = {}
     }
   }
 }
 </script>
 <style lang="scss">
-
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .main {
   background-color: var(--main_bg_content);
 	min-height: 100vh;

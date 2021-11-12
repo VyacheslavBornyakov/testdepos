@@ -1,11 +1,13 @@
 <template>
   <section class="repositorys" :class="{'repositorys-crutch' : showMore}">
-    <button class="repository" v-for="box in computedRepositories" @click="showPopupMail(box.name)">
-      <img :src="box.src" :alt="box.name">
-    </button>
-    <button class="repository">
-      <img :src="ssh.src" :alt="ssh.name">
-    </button>
+    <transition-group name="list" class="boxes">
+
+      <button class="repository" :key="box.id" v-for="box in computedRepositories" @click="showPopupMail(box.name)">
+        <img :src="box.src" :alt="box.name">
+      </button>
+
+    </transition-group>
+
     <button
         class="repository-show-more"
         v-if="!showMore"
@@ -31,19 +33,16 @@ export default {
   data: function () {
     return {
       repositories: [
-        {name: 'google_drive', src: google_drive},
-        {name: 'ydisk', src:ydisk},
-        {name: 'onedrive', src: onedrive},
-        {name: 'dropbox', src: dropbox},
-        {name: 'github', src: github},
-        {name: 'gitlab', src: gitlab},
-        {name: 'figma', src: figma},
+        {id: 1, name: 'google_drive', src: google_drive},
+        {id: 2, name: 'ydisk', src:ydisk},
+        {id: 3, name: 'onedrive', src: onedrive},
+        {id: 4, name: 'dropbox', src: dropbox},
+        {id: 5, name: 'github', src: github},
+        {id: 6, name: 'gitlab', src: gitlab},
+        {id: 7, name: 'figma', src: figma},
+        {id: 8, name: 'ssh', src:ssh}
       ],
-      ssh: {
-        name: 'ssh',
-        src:ssh
-      },
-      limit:4,
+      limit:5,
       showMore: false,
     }
   },
@@ -58,21 +57,42 @@ export default {
       this.limit = null
     },
     showPopupMail(name) {
-      this.$emit('showPopup', true, 'mail');
-      this.$emit('createPointType', name);
+      if (name !== 'ssh') {
+        this.$emit('showPopup', true, 'mail');
+        this.$emit('createPointType', name);
+      }
     },
   }
 }
 </script>
 
 <style scoped lang="scss">
+  .list-item {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+  .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
   section.repositorys {
     display: flex;
     align-items: flex-start;
     gap:20px;
     flex-wrap: wrap;
     margin-bottom: 25px;
-
+    height: auto;
+    max-height: 130px;
+    transition: max-height .5s;
+    .boxes {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
     .repository {
       background: var(--white);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
@@ -86,8 +106,8 @@ export default {
       padding: 20px 10px;
       flex-wrap: wrap;
       img {
-        max-width: 100%;
-        max-height: 100%;
+        max-width: 80px;
+        max-height: 80px;
       }
       &:hover {
         cursor: pointer;
@@ -109,8 +129,8 @@ export default {
       }
     }
 }
-  //.repositorys-crutch:after {
-  //  content: '';
-  //  flex: auto;
-  //}
+  .repositorys-crutch {
+    max-height: 285px !important;
+  }
+
 </style>

@@ -13,21 +13,85 @@
       class="file-description"
       :class="{'file-description-disable': savedDepon}"
   >
-    <setting-copyright-holders
-      :Participant = Point.Participants
-      :Company = Point.Company
-      :savedDepon = savedDepon
-      @removeCompany="removeCompany"
-      @createNewCompany="createNewCompany"
-      @removeParticipant="removeParticipant"
-      @createNewParticipant="createNewParticipant"
-    />
-    <setting-authors
-      :Authors = Point.Authors
-      :savedDepon = savedDepon
-      @removeAuthor="removeAuthor"
-      @createNewAuthor="createNewAuthor"
-    />
+
+    <div class="file-description__point">
+      <div class="file-description__point-item">
+        <div class="title">Правообладатели:</div>
+        <div class="participants items">
+          <transition-group name="item-list">
+            <input-data-owner
+                v-for="men in Point.Participants"
+                :key="men.id"
+                :Model="men"
+                @remove="removeParticipant(men)"
+            />
+          </transition-group>
+        </div>
+        <div class="company items">
+          <transition-group name="item-list">
+            <input-data-owner
+                v-for="com in Point.Company"
+                :key="com.id"
+                :Model="com"
+                @remove="removeCompany(com)"
+            />
+          </transition-group>
+        </div>
+        <div v-if="!savedDepon" class="add">
+          <div class="add__point" @click="createNewParticipant">
+            + Добавить участника*
+          </div>
+          <div class="add__point" @click="createNewCompany">
+            + Добавить компанию
+          </div>
+        </div>
+      </div>
+
+      <div class="file-description__point-item js-owners-en">
+        <div class="title">Owners:</div>
+        <div class="participants items">
+          <div class="item" v-for="men in Point.Participants">
+            <p>{{ men.name_en }}</p>
+          </div>
+        </div>
+        <div class="company items">
+          <div class="item" v-for="com in Point.Company">
+            <p>{{ com.name_en }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="file-description__point">
+      <div class="file-description__point-item">
+        <div class="title">Авторы:</div>
+        <div class="participants items">
+          <transition-group name="item-list">
+            <input-data-owner
+                v-for="author in Point.Authors"
+                :Model="author"
+                :key="author.id"
+                @remove="removeAuthor(author)"
+            />
+          </transition-group>
+        </div>
+        <div class="add">
+          <div v-if="!savedDepon" class="add__point" @click="createNewAuthor">
+            + Добавить автора*
+          </div>
+        </div>
+      </div>
+
+      <div class="file-description__point-item js-authors-en">
+        <div class="title">Authors:</div>
+        <div class="participants items">
+          <div class="item" v-for="author in Point.Authors">
+            <p>{{ author.name_en }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="file-description__point">
       <setting-additional-information
         :AdditionalInformation = Point.AdditionalInformation
@@ -41,14 +105,14 @@
     </div>
 
     <button
-        v-if="!savedDepon"
+        v-if="!savedDepon && allowSave"
         @click="saveData"
         class="save btn-purple"
     >
       СОХРАНИТЬ
     </button>
     <button
-        v-if="savedDepon"
+        v-if="savedDepon && allowSave"
         @click="editData"
         class="save btn-edit"
     >
@@ -58,10 +122,10 @@
 </template>
 
 <script>
-import SettingCopyrightHolders from "./SettingCopyrightHolders";
-import SettingAuthors from "./SettingAuthors";
 import SettingAdditionalInformation from "./SettingAdditionalInformation";
 import SettingType from "./SettingType";
+import InputDataOwner from "../UI/InputDataOwner";
+
 export default {
   name: "SettingDepositing",
   props: {
@@ -70,9 +134,12 @@ export default {
     },
     Point: {
       type: Object
+    },
+    allowSave: {
+      type: Boolean
     }
   },
-  components: {SettingType, SettingAdditionalInformation, SettingAuthors, SettingCopyrightHolders},
+  components: {SettingType, SettingAdditionalInformation, InputDataOwner},
   data() {
     return {
       savedDepon: false,
@@ -119,18 +186,14 @@ export default {
       this.Point.Authors = this.Point.Authors.filter(p => p.id !== Author.id)
     },
     saveData() {
-      this.Point.Participants.forEach(element => {
-        this.customValidateParticipants(element)
-      })
-      this.Point.Company.forEach(element => {
-        this.customValidateCompany(element)
-      })
-      this.Point.Authors.forEach(element => {
-        this.customValidateAuthors(element)
-      })
 
-      if (this.Point.Participants.length === 0 || this.Point.Company.length === 0 || this.Point.Authors.length === 0) {
-        alert('Нужно заполнить все обязательные поля')
+      if (this.Point.Participants.length === 0 || this.Point.Authors.length === 0) {
+        console.log(this.Point)
+        this.Point.stateId = 1
+        this.Point.Authors = []
+        this.Point.Participants = []
+        this.Point.Company = []
+        this.Point.AdditionalInformation = ''
         return
       }
 
@@ -139,25 +202,6 @@ export default {
     editData() {
       this.savedDepon = false
     },
-
-    customValidateParticipants(element) {
-      if (this.customValidateFields(element)) {
-        this.removeParticipant(element)
-      }
-    },
-    customValidateCompany(element) {
-      if (this.customValidateFields(element)) {
-        this.removeCompany(element)
-      }
-    },
-    customValidateAuthors(element) {
-      if (this.customValidateFields(element)) {
-        this.removeAuthor(element)
-      }
-    },
-    customValidateFields(element) {
-      return Boolean(element.name.length < 3)
-    }
   }
 }
 </script>

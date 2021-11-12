@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     hideDialog() {
-      this.$emit('update:show', false)
+      this.$emit('hidePopup', false)
     },
     showInfoPopup() {
       this.$emit('showInfoPopup', true, 'access')
@@ -55,7 +55,7 @@ export default {
     bottom: 0;
     margin: auto auto !important;
     background: var(--white);
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
     border-radius: 30px;
     padding: 15px 30px;
     display: flex;

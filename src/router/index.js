@@ -7,6 +7,7 @@ import AntiPiracyResult from '../views/AntiPiracyResult'
 import Documents from '../views/Documents'
 import Integration from '../views/Integration'
 import SubscriptionsManagement from '../views/SubscriptionsManagement'
+import SignUp from "../views/SignUp";
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,10 @@ const routes = [
   {
     path: '/integration',
     component: Integration
+  },
+  {
+    path: '/signup',
+    component: SignUp
   },
 ]
 

@@ -40,6 +40,13 @@
             документы
           </router-link>
         </div>
+
+        <router-link
+            to="/signup"
+            v-if="!$store.state.isAuth"
+        >
+          Регистрация
+        </router-link>
       </div>
       <div class="aside__links">
         <router-link
@@ -142,7 +149,7 @@ aside {
           width: 100%;
           height: 1px;
           position: absolute;
-          bottom: -4px;
+          bottom: -1px;
           left: 0;
           background-color: white;
           content: '';

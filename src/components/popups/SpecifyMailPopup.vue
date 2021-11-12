@@ -39,7 +39,7 @@ export default {
         this.validate = true
       } else {
         event.target.style.border = '1px solid red'
-        this.validate = true
+        this.validate = false
       }
     },
     sendEmail() {

@@ -1,0 +1,12 @@
+[
+
+  {id: 1, name: 'google_drive', src: google_drive},
+  {id: 2, name: 'ydisk', src:ydisk},
+  {id: 3, name: 'onedrive', src: onedrive},
+  {id: 4, name: 'dropbox', src: dropbox},
+  {id: 5, name: 'github', src: github},
+  {id: 6, name: 'gitlab', src: gitlab},
+  {id: 7, name: 'figma', src: figma},
+  {id: 8, name: 'ssh', src:ssh},
+
+]

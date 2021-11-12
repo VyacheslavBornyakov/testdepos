@@ -4,7 +4,9 @@
     <mobile-control-sidebar
       @toggleSidebar="showSidebar"
     />
-    <Sidebar/>
+    <Sidebar
+      v-if="this.$route.path !== '/signup'"
+    />
     <router-view/>
     </div>
   </div>

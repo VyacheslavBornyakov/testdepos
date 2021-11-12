@@ -1,7 +1,6 @@
 <template>
   <div class="files__point">
-    <div class="extension">
-      <img :src="file.extensionsType"/>
+    <div class="extension" :class="'extension-'+file.extensionsType">
     </div>
 
     <div class="link">
@@ -15,13 +14,9 @@
     </div>
 
     <div class="controls">
-      <div class="controls__item"
-           @click="toggleOpen"
-           :class="{'access-open' : control_open, 'access-close' : !control_open}"
-      ></div>
       <div class="controls__item ru"
-         @click="toggleLang"
-         :class="{'ru' : control_ru, 'en' : !control_ru}"
+      ></div>
+      <div class="controls__item en"
       ></div>
       <div class="controls__item additionally js-additionally" @click="toggleAdditionaly"></div>
       <div class="additionally__js" v-if="show_additionaly">
@@ -47,18 +42,10 @@ export default {
   data() {
     return {
       copy:copy,
-      control_open: true,
-      control_ru: true,
       show_additionaly:false
     }
   },
   methods: {
-    toggleLang() {
-      this.control_ru = !this.control_ru
-    },
-    toggleOpen() {
-      this.control_open = !this.control_open
-    },
     toggleAdditionaly() {
       this.show_additionaly = !this.show_additionaly
     }
@@ -78,11 +65,65 @@ export default {
     max-width: 40px;
     width: 100%;
     height: 40px;
-    background: var(--white);
+    background-color: var(--white);
     border: 2px solid rgba(141, 141, 141, 0.6);
     box-sizing: border-box;
     border-radius: 20px;
     margin-right: 10px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    &:hover {
+      border: 2px solid rgba(141, 141, 141, 1);
+    }
+    &-pdf {
+        background-image: url('../../../assets/images/extension-svg/pdf.svg');
+        &:hover {
+          background-image: url('../../../assets/images/extension-svg/pdf-hover.svg');
+        }
+    }
+    &-mp3 {
+      background-image: url('../../../assets/images/extension-svg/mp3.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/mp3-hover.svg');
+      }
+    }
+    &-mp4 {
+      background-image: url('../../../assets/images/extension-svg/mp4.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/mp4-hover.svg');
+      }
+    }
+    &-xls {
+      background-image: url('../../../assets/images/extension-svg/xls.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/xls-hover.svg');
+      }
+    }
+    &-doc {
+      background-image: url('../../../assets/images/extension-svg/doc.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/doc-hover.svg');
+      }
+    }
+    &-txt {
+      background-image: url('../../../assets/images/extension-svg/txt.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/txt-hover.svg');
+      }
+    }
+    &-zip {
+      background-image: url('../../../assets/images/extension-svg/zip.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/zip-hover.svg');
+      }
+    }
+    &-img {
+      background-image: url('../../../assets/images/extension-svg/img.svg');
+      &:hover {
+        background-image: url('../../../assets/images/extension-svg/img-hover.svg');
+      }
+    }
+
     img {
       width: 100%;
       height: 100%;
@@ -221,4 +262,6 @@ export default {
     }
   }
 }
+
+
 </style>

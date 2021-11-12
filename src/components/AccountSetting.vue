@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 section.auth {
   margin: auto;
   max-width: 360px;
@@ -91,40 +91,40 @@ section.auth {
       }
     }
   }
-  .auth__nav {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    height: 40px;
-    .nav__point	{
-      width: 100%;
-      background: var(--light_white);
-      display: flex;
-      align-items:center;
-      padding-left: 30px;
-      font-family: var(--ff_regular);
-      font-size: 16px;
-      line-height: 18px;
-      color: var(--text_gray_color);
-      cursor: pointer;
-      &:hover {
-         background-color: var(--white);
-       }
-      &:first-child {
-         border-right: 1px solid var(--text_gray_color);
-         border-bottom-left-radius: 30px;
-       }
-      &:last-child {
-         border-left: 1px solid var(--text_gray_color);
-         border-bottom-right-radius: 30px;
-       }
-      }
-      .active {
-        background: var(--white);
-      }
-  }
+  //.auth__nav {
+  //  flex: 0 0 auto;
+  //  display: flex;
+  //  flex-direction: row;
+  //  width: 100%;
+  //  justify-content: space-between;
+  //  height: 40px;
+  //  .nav__point	{
+  //    width: 100%;
+  //    background: var(--light_white);
+  //    display: flex;
+  //    align-items:center;
+  //    padding-left: 30px;
+  //    font-family: var(--ff_regular);
+  //    font-size: 16px;
+  //    line-height: 18px;
+  //    color: var(--text_gray_color);
+  //    cursor: pointer;
+  //    &:hover {
+  //       background-color: var(--white);
+  //     }
+  //    &:first-child {
+  //       border-right: 1px solid var(--text_gray_color);
+  //       border-bottom-left-radius: 30px;
+  //     }
+  //    &:last-child {
+  //       border-left: 1px solid var(--text_gray_color);
+  //       border-bottom-right-radius: 30px;
+  //     }
+  //    }
+  //    .active {
+  //      background: var(--white);
+  //    }
+  //}
 }
 
 section.account-setting {

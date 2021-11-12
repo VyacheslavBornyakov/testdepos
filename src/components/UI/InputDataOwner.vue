@@ -2,20 +2,20 @@
   <div class="input-title item">
     <span
         class="js-remove-item"
-        @click="$emit('remove', Participant)"
+        @click="removeModel"
     >
       +
     </span>
 
-    <input type="text" ref="input" v-model.trim="Participant.name">
+    <input type="text" ref="input" v-on:blur="handleBlur" v-model.trim="Model.name">
   </div>
 </template>
 
 <script>
 export default {
-  name: "Participant",
+  name: "InputDataOwner",
   props: {
-    Participant: {
+    Model: {
       type:Object,
     }
   },
@@ -23,6 +23,16 @@ export default {
     this.$nextTick(()=>{
       this.$refs.input.focus()
     });
+  },
+  methods: {
+    handleBlur(e) {
+      if (e.target.value.length < 3) {
+        this.removeModel()
+      }
+    },
+    removeModel() {
+      this.$emit('remove', this.Model)
+    }
   }
 }
 </script>

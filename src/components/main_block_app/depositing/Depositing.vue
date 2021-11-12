@@ -8,17 +8,19 @@
     <setting-depositing
         :stateId = Point.stateId
         :Point = Point
+        :allowSave="true"
     />
 
     <div v-if="showFiles && Point.stateId === 2" class="files">
       <depositing-files
-          v-for="file in Point.Files"
+          v-for="file in computedFiles"
           :file="file"
       />
     </div>
     <div
-        v-if="showFiles && Point.stateId !== 1 && Point.Files.length > 10"
+        v-if="showFiles && showMore && Point.stateId !== 1 && Point.Files.length > 10"
         class="show-more"
+        @click="showMoreFiles"
     >
       Показать еще...
     </div>
@@ -62,12 +64,30 @@ export default {
     return {
       showFiles: false,
       limitShowFiles: 10,
+      showMore: false
+    }
+  },
+  beforeMount() {
+    this.countNumberFiles()
+  },
+  computed:{
+    computedFiles(){
+      return this.limitShowFiles ? this.Point.Files.slice(0,this.limitShowFiles) : this.Point.Files
     }
   },
   methods: {
+    countNumberFiles() {
+      if (this.Point.Files.length > 10) {
+        this.showMore = true
+      }
+    },
     removePoint() {
       this.$emit('removePoint', this.Point)
-    }
+    },
+    showMoreFiles() {
+      this.limitShowFiles = this.limitShowFiles + 10
+      this.showMore = Boolean(this.Point.Files.length > this.limitShowFiles)
+    },
   }
 }
 </script>
@@ -76,5 +96,8 @@ export default {
 .files {
   display: flex;
   flex-direction: column;
+}
+.show-more {
+  cursor:pointer;
 }
 </style>

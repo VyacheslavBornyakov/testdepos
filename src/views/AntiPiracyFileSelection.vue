@@ -143,7 +143,7 @@
 <script>
 import ydisk from "../assets/images/ydisk.jpeg";
 import copy from "../assets/icons/copy.svg";
-import Notification from "../components/Notification";
+import Notification from "../components/UI/Notification";
 
 export default {
   name: "AntiPiracyFileSelection",

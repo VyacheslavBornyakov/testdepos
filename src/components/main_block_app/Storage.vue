@@ -1,7 +1,7 @@
 <template>
   <section class="main-app-block">
     <div class="main-app-block__header">
-      <img :src="logo" class="logo_repository">
+      <img :src="main_reposiory_logo" class="logo_repository">
       <div class="title">
         Хранилище
       </div>
@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import extension_css from "./../../assets/images/extensions/css.svg";
-import extension_excel from "./../../assets/images/extensions/excel.svg";
+import main_reposiory_logo from '../../assets/icons/main-reposiory-logo.svg'
 import File from "./repository/File";
 
 
@@ -39,19 +38,12 @@ export default {
   components: {File},
   data() {
     return {
-      extensions: {
-        css: extension_css,
-        excel: extension_excel,
-      },
+      main_reposiory_logo: main_reposiory_logo,
     }
   },
   props: {
     Files: {
       type:Array
-    },
-    logo: {
-      type:String,
-      required: true
     },
     count_files: {
       type:Number
@@ -76,7 +68,7 @@ export default {
       position: relative;
       width: 150px;
       height: 150px;
-      background: var(--light_white);
+      background-color: var(--light_white);
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
       border-radius: 20px;
       margin-bottom: 8px;

@@ -1,6 +1,6 @@
 <template>
   <div class="repository-files__item">
-    <div class="logo">
+    <div class="logo" :class="'logo-'+file.extensionsType">
       <div class="file-control">
         <div class="file-control__ru point">
           <img :src="file_control_ru">
@@ -18,7 +18,7 @@
           <img :src="file_control_additionally">
         </div>
       </div>
-      <img :src="file.extensionsType" class="file-extension" @click="editName">
+      <div class="name-edit" @click="editName"></div>
     </div>
     <div class="name">
       <p contenteditable="true" ref="name">{{ file.name }}</p>
@@ -60,9 +60,75 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.file-control {
+  .point {
+    z-index: 4;
+  }
+}
+.name-edit {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
 .name {
   p {
     max-width: 130px;
+  }
+}
+.logo{
+  position: relative;
+  cursor: pointer;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  &-pdf {
+    background-image: url('../../../assets/images/extension-svg/main-pdf.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-pdf-hover.svg');
+    }
+  }
+  &-mp3 {
+    background-image: url('../../../assets/images/extension-svg/main-mp3.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-mp3-hover.svg');
+    }
+  }
+  &-mp4 {
+    background-image: url('../../../assets/images/extension-svg/main-mp4.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-mp4-hover.svg');
+    }
+  }
+  &-xls {
+    background-image: url('../../../assets/images/extension-svg/main-xls.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-xls-hover.svg');
+    }
+  }
+  &-doc {
+    background-image: url('../../../assets/images/extension-svg/main-doc.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-doc-hover.svg');
+    }
+  }
+  &-txt {
+    background-image: url('../../../assets/images/extension-svg/main-txt.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-txt-hover.svg');
+    }
+  }
+  &-zip {
+    background-image: url('../../../assets/images/extension-svg/main-zip.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-zip-hover.svg');
+    }
+  }
+  &-img {
+    background-image: url('../../../assets/images/extension-svg/main-img.svg');
+    &:hover {
+      background-image: url('../../../assets/images/extension-svg/main-img-hover.svg');
+    }
   }
 }
 </style>

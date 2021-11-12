@@ -16,52 +16,11 @@
       </div>
     </div>
 
-    <div
-        class="file-description"
-        :class="{'file-description-disable': savedDepon}"
-    >
-      <setting-copyright-holders
-          :Participant = Point.Participants
-          :Company = Point.Company
-          :savedDepon = savedDepon
-          @removeCompany="removeCompany"
-          @createNewCompany="createNewCompany"
-          @removeParticipant="removeParticipant"
-          @createNewParticipant="createNewParticipant"
-      />
-      <setting-authors
-          :Authors = Point.Authors
-          :savedDepon = savedDepon
-          @removeAuthor="removeAuthor"
-          @createNewAuthor="createNewAuthor"
-      />
-      <div class="file-description__point">
-        <setting-additional-information
-            :AdditionalInformation = Point.AdditionalInformation
-            :savedDepon = savedDepon
-            @updateAdditionalInformation="updateAdditionalInformation"
-        />
-        <setting-type
-            :Type = Point.Type
-            :savedDepon = savedDepon
-        />
-      </div>
-
-      <button
-          v-if="!savedDepon"
-          @click="saveData"
-          class="save btn-purple"
-      >
-        СОХРАНИТЬ
-      </button>
-      <button
-          v-if="savedDepon"
-          @click="editData"
-          class="save btn-edit"
-      >
-        РЕДАКТИРОВАТЬ
-      </button>
-    </div>
+    <setting-depositing
+      :Point="Point"
+      :state-id="2"
+      :allowSave="false"
+    />
 
     <div class="certificate">
       <div class="custom-radio-form-group">
@@ -85,13 +44,13 @@
 <script>
 import SettingAdditionalInformation from "../setting_depositing/SettingAdditionalInformation";
 import SettingType from "../setting_depositing/SettingType";
-import SettingAuthors from "../setting_depositing/SettingAuthors";
-import SettingCopyrightHolders from "../setting_depositing/SettingCopyrightHolders";
+import SettingDepositing from "../setting_depositing/SettingDepositing";
 
 export default {
   name: "NewFile",
   components: {
-    SettingAdditionalInformation,SettingType,SettingAuthors,SettingCopyrightHolders
+    SettingDepositing,
+    SettingAdditionalInformation,SettingType
   },
   data() {
     return {

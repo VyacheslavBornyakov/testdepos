@@ -21,7 +21,6 @@
             <tr>
               <th scope="col">ОБЪЕКТ</th>
               <th scope="col">НАЙДЕНЫ ССЫЛКИ</th>
-              <th scope="col">НАЙДЕН ПИРАТ</th>
               <th scope="col">СТАТУС</th>
             </tr>
             </thead>
@@ -30,17 +29,9 @@
               <th scope="row">logotip_final_v2</th>
               <td></td>
               <td></td>
-              <td></td>
             </tr>
             <tr>
               <th scope="row">logotip_final_v2</th>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <th scope="row">logotip_final_v2</th>
-              <td></td>
               <td></td>
               <td></td>
             </tr>
@@ -48,17 +39,19 @@
               <th scope="row">logotip_final_v2</th>
               <td></td>
               <td></td>
-              <td></td>
             </tr>
             <tr>
               <th scope="row">logotip_final_v2</th>
               <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">logotip_final_v2</th>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <th scope="row"></th>
-              <td></td>
               <td></td>
               <td></td>
             </tr>
@@ -72,7 +65,7 @@
 </template>
 
 <script>
-import Notification from "../components/Notification"
+import Notification from "../components/UI/Notification"
 
 export default {
   name: "AntiPiracyResult",
