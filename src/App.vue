@@ -8,6 +8,30 @@
       v-if="this.$route.path !== '/signup'"
     />
     <router-view/>
+
+      <popup
+          :show.sync="$store.state.PopupModule.dialogVisibleShow"
+      >
+
+        <transition name="bounce">
+          <specify-mail-popup
+              v-if="$store.state.PopupModule.dialogVisibleType === 'mail'"
+          />
+          <access-popup
+              v-else-if="$store.state.PopupModule.dialogVisibleType === 'access'"
+          />
+          <file-remove
+              v-else-if="$store.state.PopupModule.dialogVisibleType === 'file-remove'"
+          />
+          <point-remove
+              v-else-if="$store.state.PopupModule.dialogVisibleType === 'point-remove'"
+          />
+          <warning-popup
+              v-else-if="$store.state.PopupModule.dialogVisibleType === 'warning'"
+          />
+
+        </transition>
+      </popup>
     </div>
   </div>
 </template>
@@ -15,10 +39,16 @@
 <script>
 import Sidebar from "./components/SideBar";
 import MobileControlSidebar from "./components/UI/MobileControlSidebar";
+import AccessPopup from "./components/popups/AccessPopup";
+import SpecifyMailPopup from "./components/popups/SpecifyMailPopup";
+import WarningPopup from "./components/popups/WarningPopup";
+import Popup from "./components/popups/Popup";
+import FileRemove from "./components/popups/FileRemove";
+import PointRemove from "./components/popups/PointRemove";
 
 export default {
   name: "app",
-  components: {MobileControlSidebar, Sidebar},
+  components: {MobileControlSidebar, Sidebar, AccessPopup, SpecifyMailPopup, WarningPopup, Popup, FileRemove, PointRemove},
   methods: {
     showSidebar() {
       document.querySelector('aside').classList.toggle('aside-show')

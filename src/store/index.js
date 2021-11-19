@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {mainRepositoryModule} from "./mainRepositoryModule";
-import {popupModule} from "./popupModule";
-import {repositoryModule} from "./repositoryModule";
+import {MainRepositoryModule} from "./modules/clientData/MainRepositoryModule";
+import {PopupModule} from "./modules/popup/PopupModule";
+import {ClientStoragesModule} from "./modules/clientData/ClientStoragesModule";
+import {ThirdPartyStoragesModule} from "./modules/siteRepositories/ThirdPartyStoragesModule";
+import {ClientStorageFilesModule} from "./modules/clientData/ClientStorageFilesModule";
+import {FilesForAntiPiracy} from "./modules/clientData/FilesForAntiPiracy";
+import {ClientModule} from "./modules/auth/ClientModule";
 
 
 Vue.use(Vuex)
@@ -16,8 +20,12 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    // mainRepository: mainRepositoryModule,
-    // popup: popupModule,
-    // repository: repositoryModule
+    MainRepositoryModule: MainRepositoryModule,
+    PopupModule: PopupModule,
+    ClientStoragesModule: ClientStoragesModule,
+    ThirdPartyStoragesModule: ThirdPartyStoragesModule,
+    ClientStorageFilesModule: ClientStorageFilesModule,
+    FilesForAntiPiracy: FilesForAntiPiracy,
+    ClientModule: ClientModule
   }
 })

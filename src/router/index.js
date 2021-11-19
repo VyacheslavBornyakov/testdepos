@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Account from '../views/Account'
-import AntiPiracyFileSelection from '../views/AntiPiracyFileSelection'
-import AntiPiracyResult from '../views/AntiPiracyResult'
-import Documents from '../views/Documents'
-import Integration from '../views/Integration'
-import SubscriptionsManagement from '../views/SubscriptionsManagement'
-import SignUp from "../views/SignUp";
+import Home from '../layout/Home.vue'
+import Account from '../layout/Account'
+import AntiPiracyFileSelection from '../layout/AntiPiracyFileSelection'
+import AntiPiracyResult from '../layout/AntiPiracyResult'
+import Documents from '../layout/Documents'
+import Integration from '../layout/Integration'
+import SubscriptionsManagement from '../layout/SubscriptionsManagement'
+import SignUp from "../layout/SignUp";
 
 Vue.use(VueRouter)
 

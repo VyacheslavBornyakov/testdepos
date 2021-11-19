@@ -2,7 +2,6 @@
   <section class="main-app-block">
     <main-block-header
         :Point="Point"
-        @removePoint="removePoint"
     />
 
     <setting-depositing
@@ -11,22 +10,27 @@
         :allowSave="true"
     />
 
-    <div v-if="showFiles && Point.stateId === 2" class="files">
-      <depositing-files
-          v-for="file in computedFiles"
-          :file="file"
-      />
-    </div>
+    <transition name="files">
+      <div v-if="showFiles && Point.stateId === 2" class="files">
+        <transition-group name="point-list">
+          <depositing-files
+              v-for="file in $store.state.ClientStorageFilesModule.RepositoryFiles"
+              :file="file"
+              :key="file.id"
+          />
+        </transition-group>
+      </div>
+    </transition>
     <div
-        v-if="showFiles && showMore && Point.stateId !== 1 && Point.Files.length > 10"
+        v-if="showFiles && Point.stateId !== 1 && !$store.state.ClientStorageFilesModule.all_files_arrived"
         class="show-more"
-        @click="showMoreFiles"
+        @click="onloadFilesMore"
     >
       Показать еще...
     </div>
     <a
         v-if="!showFiles"
-        @click="(e) => {e.preventDefault(); Point.stateId === 2 ? this.showFiles = !showFiles : showFiles}"
+        @click="getFiles"
         href=""
         class="show-files"
     >
@@ -34,7 +38,7 @@
     </a>
     <a
         v-if="showFiles"
-        @click="(e) => {e.preventDefault(); this.showFiles = !this.showFiles}"
+        @click="hideFiles"
         href=""
         class="show-files"
     >
@@ -45,8 +49,9 @@
 
 <script>
 import MainBlockHeader from "./../main_block_header/MainBlockHeader";
-import SettingDepositing from "../../setting_depositing/SettingDepositing";
+import SettingDepositing from "./setting_depositing/SettingDepositing";
 import DepositingFiles from "./DepositingFiles";
+import {mapActions} from 'vuex'
 
 export default {
   name: "Depositing",
@@ -63,36 +68,28 @@ export default {
   data() {
     return {
       showFiles: false,
-      limitShowFiles: 10,
-      showMore: false
-    }
-  },
-  beforeMount() {
-    this.countNumberFiles()
-  },
-  computed:{
-    computedFiles(){
-      return this.limitShowFiles ? this.Point.Files.slice(0,this.limitShowFiles) : this.Point.Files
     }
   },
   methods: {
-    countNumberFiles() {
-      if (this.Point.Files.length > 10) {
-        this.showMore = true
-      }
+    ...mapActions({
+      onloadClientRepositoryFiles: 'ClientStorageFilesModule/onloadClientRepositoryFiles',
+      onloadFilesMore: 'ClientStorageFilesModule/onloadFilesMore'
+    }),
+    getFiles(e) {
+      e.preventDefault();
+      this.Point.stateId === 2 ? this.showFiles = !this.showFiles : this.showFiles
+      this.onloadClientRepositoryFiles()
     },
-    removePoint() {
-      this.$emit('removePoint', this.Point)
-    },
-    showMoreFiles() {
-      this.limitShowFiles = this.limitShowFiles + 10
-      this.showMore = Boolean(this.Point.Files.length > this.limitShowFiles)
-    },
+    hideFiles(e) {
+      e.preventDefault();
+      this.showFiles = !this.showFiles
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+
 .files {
   display: flex;
   flex-direction: column;

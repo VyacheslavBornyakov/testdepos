@@ -1,15 +1,29 @@
 <template>
   <div class="popup__body">
     <div class="title">Укажите вашу Google-почту</div>
-    <form @submit.prevent>
+    <form  @submit.prevent="submitEmail">
       <div class="form-group">
-        <input type="email" ref="input" @input="validateEmail" v-model.trim="email">
+        <input
+            type="text"
+            ref="input"
+            v-model.trim="email"
+            :class="{invalid:($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email)}"
+        >
+        <div
+            class="error"
+            v-if="$v.email.$dirty && !$v.email.required"
+        >
+          Поле email не должно быть пустым
+        </div>
+        <div
+            class="error"
+            v-else-if="$v.email.$dirty && !$v.email.email"
+        >
+          Введите корректный Email
+        </div>
       </div>
       <div class="control-buttons">
-        <button
-            class="btn-orange"
-            @click="sendEmail"
-        >
+        <button class="btn-orange" type="submit">
           Продолжить
         </button>
       </div>
@@ -18,14 +32,18 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+import {email, required} from 'vuelidate/lib/validators'
+
 export default {
   name: "SpecifyMailPopup",
   data() {
     return {
       email: '',
-      error: '',
-      validate: false
     }
+  },
+  validations: {
+    email:{email, required},
   },
   mounted() {
     this.$nextTick(()=>{
@@ -33,22 +51,32 @@ export default {
     });
   },
   methods: {
-    validateEmail(){
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
-        event.target.style.border = '1px solid green'
-        this.validate = true
+    ...mapActions({
+      toggleTypePopup: 'PopupModule/toggleTypePopup'
+    }),
+    submitEmail() {
+      if(this.$v.$invalid) {
+        this.$v.$touch()
+        return
       } else {
-        event.target.style.border = '1px solid red'
-        this.validate = false
-      }
-    },
-    sendEmail() {
-      if (this.validate === true) {
-        this.$emit('showInfoPopup', true, 'access')
+        this.toggleTypePopup('access')
       }
     }
   }
 }
 </script>
 
-<style></style>
+<style scoped lang="scss">
+  .invalid {
+    border: 1px solid red;
+  }
+  input {
+    width: 350px !important;
+  }
+  .error {
+    margin-top: 5px;
+    color: red;
+    padding: 0 15px;
+    font-size: 12px;
+  }
+</style>

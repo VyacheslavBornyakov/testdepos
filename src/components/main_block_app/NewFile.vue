@@ -42,15 +42,18 @@
 </template>
 
 <script>
-import SettingAdditionalInformation from "../setting_depositing/SettingAdditionalInformation";
-import SettingType from "../setting_depositing/SettingType";
-import SettingDepositing from "../setting_depositing/SettingDepositing";
+import SettingAdditionalInformation from "./depositing/setting_depositing/SettingAdditionalInformation";
+import SettingType from "./depositing/setting_depositing/SettingType";
+import SettingDepositing from "./depositing/setting_depositing/SettingDepositing";
+import IconNewFile from "../icons/IconNewFile";
 
 export default {
   name: "NewFile",
   components: {
     SettingDepositing,
-    SettingAdditionalInformation,SettingType
+    SettingAdditionalInformation,
+    SettingType,
+    IconNewFile
   },
   data() {
     return {
@@ -160,10 +163,32 @@ export default {
     line-height: 18px;
     color: var(--text_gray_color);
     font-family: var(--ff_regular);
-    opacity: 0.6;
+    opacity: 1;
   }
   button {
     padding: 12px 26px;
   }
+}
+
+
+section.main-app-block {
+
+  //transform: translateY(-150%);
+
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 </style>

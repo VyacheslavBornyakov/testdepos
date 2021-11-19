@@ -8,17 +8,25 @@
 
     <div class="control-buttons">
       <button class="btn-edit_border">Инструкция</button>
-      <button class="btn-orange" @click="hidePopupCreatePoint">Сделаю</button>
+      <button class="btn-orange" @click="hidePopup">Сделаю</button>
     </div>
   </div>
 </template>
 
 <script>
+import {mapActions, mapMutations} from 'vuex'
 export default {
   name: "AccessPopup",
   methods: {
-    hidePopupCreatePoint() {
-      this.$emit('hidePopupCreatePoint')
+    ...mapActions({
+      mapHidePopup:'PopupModule/hidePopup'
+    }),
+    ...mapMutations({
+      createNewPoint: 'ClientStoragesModule/createNewPoint'
+    }),
+    hidePopup() {
+      this.mapHidePopup()
+      this.createNewPoint()
     }
   }
 }

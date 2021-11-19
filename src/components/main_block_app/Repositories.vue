@@ -1,16 +1,21 @@
 <template>
-  <section class="repositorys" :class="{'repositorys-crutch' : showMore}">
+  <section class="repositorys" :class="{'repositorys-crutch' : $store.state.ThirdPartyStoragesModule.showMore}">
     <transition-group name="list" class="boxes">
 
-      <button class="repository" :key="box.id" v-for="box in computedRepositories" @click="showPopupMail(box.name)">
-        <img :src="box.src" :alt="box.name">
+      <button
+          class="repository"
+          v-for="box in $store.getters['ThirdPartyStoragesModule/getComputedRepositories']"
+          :key="box.id"
+          @click="addRepositoryClient(box.name)"
+      >
+        <img :src="require(`@/assets/images/${box.filename}`)" :alt="box.name">
       </button>
 
     </transition-group>
 
     <button
         class="repository-show-more"
-        v-if="!showMore"
+        v-if="!$store.state.ThirdPartyStoragesModule.showMore"
         @click="showMoreBox"
     >
       Ещё >
@@ -19,49 +24,26 @@
 </template>
 
 <script>
-import google_drive from '../../assets/images/google_drive.jpeg'
-import ydisk from '../../assets/images/ydisk.jpeg'
-import ssh from '../../assets/images/ssh.png'
-import onedrive from '../../assets/images/onedrive.jpg'
-import github from '../../assets/images/github.svg'
-import dropbox from '../../assets/images/dropbox.png'
-import gitlab from '../../assets/images/gitlab.jpeg'
-import figma from '../../assets/images/figma.png'
+import {mapActions, mapMutations} from 'vuex'
 
 export default {
   name: "Repositories",
-  data: function () {
-    return {
-      repositories: [
-        {id: 1, name: 'google_drive', src: google_drive},
-        {id: 2, name: 'ydisk', src:ydisk},
-        {id: 3, name: 'onedrive', src: onedrive},
-        {id: 4, name: 'dropbox', src: dropbox},
-        {id: 5, name: 'github', src: github},
-        {id: 6, name: 'gitlab', src: gitlab},
-        {id: 7, name: 'figma', src: figma},
-        {id: 8, name: 'ssh', src:ssh}
-      ],
-      limit:5,
-      showMore: false,
-    }
-  },
-  computed:{
-    computedRepositories(){
-      return this.limit ? this.repositories.slice(0,this.limit) : this.repositories
-    }
+  beforeMount() {
+    this.fetchRepositories()
   },
   methods: {
-    showMoreBox() {
-      this.showMore = true
-      this.limit = null
-    },
-    showPopupMail(name) {
-      if (name !== 'ssh') {
-        this.$emit('showPopup', true, 'mail');
-        this.$emit('createPointType', name);
-      }
-    },
+    ...mapActions({
+      showMoreBox: 'ThirdPartyStoragesModule/showMoreBox',
+      fetchRepositories: 'ThirdPartyStoragesModule/fetchRepositories',
+      showPopup: 'PopupModule/showPopup'
+    }),
+    ...mapMutations({
+      setNewPointType: 'ClientStoragesModule/setNewPointType'
+    }),
+    addRepositoryClient(name) {
+      this.showPopup('mail')
+      this.setNewPointType(name)
+    }
   }
 }
 </script>

@@ -1,29 +1,49 @@
 <template>
   <div class="files__point">
-    <div class="extension" :class="'extension-'+file.extensionsType">
+    <div class="extension" @mouseover="fillOpacity = 1" @mouseleave="fillOpacity = 0.6">
+      <extension-icon
+        :iconType="file.extension"
+        class="extension-icon"
+        :fillOpacity="fillOpacity"
+      />
     </div>
 
     <div class="link">
       <div class="way">
         <span>{{ file.directories }}</span>
-        <p contenteditable="true">{{ file.name }}</p>
+        <p contenteditable="true" v-model="file.filename">{{ file.filename }}</p>
       </div>
       <div class="link__copy">
         <img :src="copy">
       </div>
     </div>
 
-    <div class="controls">
-      <div class="controls__item ru"
-      ></div>
-      <div class="controls__item en"
-      ></div>
-      <div class="controls__item additionally js-additionally" @click="toggleAdditionaly"></div>
+    <div class="controls" v-if="controlType === 1">
+      <div class="controls__item ru">
+        <icon-ru/>
+      </div>
+      <div class="controls__item en">
+        <icon-en/>
+      </div>
+
+      <div class="controls__item additionally" @click="toggleAdditionaly">
+        <icon-additionally/>
+      </div>
       <div class="additionally__js" v-if="show_additionaly">
-        <p>свидетельство на русском</p>
-        <p>свидетельство на английском</p>
         <p>изменить данные свидетельств</p>
         <p>передать права</p>
+      </div>
+    </div>
+
+    <div class="controls" v-else-if="controlType === 2">
+
+      <div
+          class="controls__item onion"
+          :class="{'onion-active' : file.onAntipiracy}"
+          @click="addFile"
+          @mouseover="onionColor = '#FFFFFF'" @mouseleave="onionColor = '#8D8D8D'"
+      >
+        <icon-onion :color="onionColor"/>
       </div>
     </div>
   </div>
@@ -31,29 +51,60 @@
 
 <script>
 import copy from "../../../assets/icons/copy.svg";
+import ExtensionIcon from "../../icons/extensionIcons/ExtensionIcon";
+import IconRu from "../../icons/controls/IconRu";
+import IconEn from "../../icons/controls/IconEn";
+import IconAdditionally from "../../icons/controls/IconAdditionally";
+import {mapMutations, mapActions} from 'vuex'
+import IconOnion from "../../icons/controls/IconOnion";
+
 
 export default {
   name: "DepositingFiles",
+  components: {IconOnion, IconAdditionally, IconEn, IconRu, ExtensionIcon},
   props: {
     file: {
       type: Object
+    },
+    controlType: {
+      type:Number,
+      default: 1
     }
   },
   data() {
     return {
       copy:copy,
-      show_additionaly:false
+      show_additionaly:false,
+      fillOpacity:0.6,
+      onionColor:'#8D8D8D',
+      fileAddedToAntiPiracy: false
     }
   },
   methods: {
+    ...mapMutations({
+      addFileOnAntiPiracy:'FilesForAntiPiracy/addFileOnAntiPiracy',
+      updateData: 'FilesForAntiPiracy/updateData'
+    }),
+    ...mapActions({
+      showPopup:'PopupModule/showPopup'
+    }),
     toggleAdditionaly() {
       this.show_additionaly = !this.show_additionaly
+    },
+    addFile() {
+      if (!this.file.onAntipiracy) {
+        this.addFileOnAntiPiracy(this.file)
+        this.showPopup('warning')
+      } else {
+        this.addFileOnAntiPiracy(this.file)
+        this.updateData(false)
+      }
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 .files__point {
   display: flex;
@@ -62,86 +113,34 @@ export default {
   margin-top: 2px;
   margin-bottom: 2px;
   .extension {
-    max-width: 40px;
-    width: 100%;
-    height: 40px;
-    background-color: var(--white);
-    border: 2px solid rgba(141, 141, 141, 0.6);
-    box-sizing: border-box;
-    border-radius: 20px;
-    margin-right: 10px;
+    border: 2px solid var(--btn_edit_border);
     background-repeat: no-repeat;
     background-position: 50%;
+    position: relative;
+    &-icon {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      margin: auto;
+    }
     &:hover {
-      border: 2px solid rgba(141, 141, 141, 1);
-    }
-    &-pdf {
-        background-image: url('../../../assets/images/extension-svg/pdf.svg');
-        &:hover {
-          background-image: url('../../../assets/images/extension-svg/pdf-hover.svg');
+      border: 2px solid var(--btn_edit_border-hover);
+      &-icon {
+        .extension-icon {
+          fill: red !important;
         }
-    }
-    &-mp3 {
-      background-image: url('../../../assets/images/extension-svg/mp3.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/mp3-hover.svg');
+        svg {
+          path {
+          }
+        }
       }
-    }
-    &-mp4 {
-      background-image: url('../../../assets/images/extension-svg/mp4.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/mp4-hover.svg');
-      }
-    }
-    &-xls {
-      background-image: url('../../../assets/images/extension-svg/xls.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/xls-hover.svg');
-      }
-    }
-    &-doc {
-      background-image: url('../../../assets/images/extension-svg/doc.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/doc-hover.svg');
-      }
-    }
-    &-txt {
-      background-image: url('../../../assets/images/extension-svg/txt.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/txt-hover.svg');
-      }
-    }
-    &-zip {
-      background-image: url('../../../assets/images/extension-svg/zip.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/zip-hover.svg');
-      }
-    }
-    &-img {
-      background-image: url('../../../assets/images/extension-svg/img.svg');
-      &:hover {
-        background-image: url('../../../assets/images/extension-svg/img-hover.svg');
-      }
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius:50%;
     }
   }
 
 
   .link {
-    position: relative;
-    background: var(--light_white);
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    border-radius: 20px;
-    padding: 9px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
     .way {
       display: inline-flex;
       align-items: center;
@@ -160,89 +159,30 @@ export default {
     }
   }
 
-  &-no_depositing {
-    .link {
-      max-width: 620px;
-    }
-  }
 
 
 }
 
 
 .controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   position: relative;
   &__item {
-    width: 40px;
-    height: 40px;
-    background: var(--light_white);
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-    border-radius: 20px;
-    cursor:pointer;
-    margin-left: 10px;
-  }
-  .ru {
-    background-image: url('../../../assets/icons/ru-gray.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    &:hover {
-      background-image: url('../../../assets/icons/ru-gray-hover.svg');
-    }
-  }
-  .en {
-    background-image: url('../../../assets/icons/en-gray.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    &:hover {
-      background-image: url('../../../assets/icons/en-gray-hover.svg');
-    }
-  }
-  .access-open {
-    background-image: url('../../../assets/icons/access-open.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    &:hover {
-      background-image: url('../../../assets/icons/access-open-hover.svg');
-    }
-  }
-  .access-close {
-    background-image: url('../../../assets/icons/access-close.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    &:hover {
-      background-image: url('../../../assets/icons/access-close-hover.svg');
-    }
-  }
-  .additionally {
-    background-image: url('../../../assets/icons/additionally.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    &:hover {
-      background-image: url('../../../assets/icons/additionally-hover.svg');
-    }
+    position: relative;
   }
   .onion {
-    background-image: url('../../../assets/icons/onion.svg');
-    background-repeat: no-repeat;
-    background-position: 60% 60%;
-    &:hover {
-      background-color: var(--onion-hover);
-      background-image: url('../../../assets/icons/onion-active.svg');
-    }
-  }
-  .onion-active {
-    background-image: url('../../../assets/icons/onion-active.svg');
-    background-repeat: no-repeat;
-    background-position: 60% 60%;
-    background-color: var(--onion);
-    &:hover {
-      background-color: var(--onion-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-active {
+      svg {
+        path {
+          stroke:#ffffff !important;
+        }
+      }
     }
   }
   .additionally__js {
+    display: block !important;
     position: absolute;
     right: 0;
     bottom: 30px;

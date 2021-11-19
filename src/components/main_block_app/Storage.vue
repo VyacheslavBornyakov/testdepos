@@ -18,10 +18,11 @@
           v-for="file in Files"
           :file="file"
           :key="file.id"
-          @removeFile="$emit('removeFile', file)"
       />
       <div class="repository-files__item">
-        <div class="logo logo-add" @click="$emit('showBlockNewFile')"></div>
+        <div class="logo" @click="$emit('showBlockNewFile')">
+          <icon-new-file class="add_new_file_toggle"/>
+        </div>
       </div>
 
     </div>
@@ -30,12 +31,13 @@
 
 <script>
 import main_reposiory_logo from '../../assets/icons/main-reposiory-logo.svg'
-import File from "./repository/File";
+import File from "./storage/File";
+import IconNewFile from "../icons/IconNewFile";
 
 
 export default {
   name: "Storage",
-  components: {File},
+  components: {IconNewFile, File},
   data() {
     return {
       main_reposiory_logo: main_reposiory_logo,
@@ -64,6 +66,8 @@ export default {
     flex-direction: column;
     align-items:center;
     margin-bottom: 15px;
+    margin-right: 0;
+    position: relative;
     .logo {
       position: relative;
       width: 150px;
@@ -133,13 +137,7 @@ export default {
       }
       &-add {
         position: relative;
-        background-image: url('./../../assets/icons/file-add.svg');
-        background-repeat: no-repeat;
-        background-position: 50%;
         cursor: pointer;
-        &:hover {
-          background-image: url('./../../assets/icons/file-add-hover.svg');
-        }
         input[type="file"] {
           cursor: pointer;
           opacity: 0;

@@ -1,14 +1,13 @@
 <template>
   <div class="type__of__popup" v-if="show">
     <div class="popup__bg" @click.stop="hideDialog"></div>
-    <slot
-      @hidePopupCreateRepository="hidePopupCreateRepository"
-      @showInfoPopup="showInfoPopup"
-    ></slot>
+    <slot></slot>
   </div>
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   name: "Popup",
   props: {
@@ -18,15 +17,9 @@ export default {
     }
   },
   methods: {
-    hideDialog() {
-      this.$emit('hidePopup', false)
-    },
-    showInfoPopup() {
-      this.$emit('showInfoPopup', true, 'access')
-    },
-    hidePopupCreateRepository() {
-      this.$emit('hidePopupCreateRepository', false, '')
-    }
+    ...mapActions({
+      hideDialog: 'PopupModule/hidePopup'
+    })
   }
 }
 </script>
@@ -57,7 +50,7 @@ export default {
     background: var(--white);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
     border-radius: 30px;
-    padding: 15px 30px;
+    padding: 15px 30px 20px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
